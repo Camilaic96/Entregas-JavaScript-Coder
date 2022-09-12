@@ -1,31 +1,23 @@
-/*
-Se tienen los siguientes datos de los N socios de un club:
-Número de socio
-Nombre y apellido
-Edad
-Sexo (F, M ó NB)
-Importe de la cuota
-
-Se quiere saber (mostrar opciones en menú):
-a) Cantidad de mujeres y cantidad de hombres
-b) Promedio de edad de todos socios
-c) Total recaudado por el club en concepto de cuotas
-*/
 let opc
-let totalEdades = 0
 let cantMujeres = 0
 let cantHombres = 0
 let cantNoBinarios = 0
 const valorCuota = 1000
 let socios = []
 let nroSocio
+let sociosDeudores = []
 
-const listadoMenu = () => parseInt(prompt("Menú:\n1- Ingresar socios\n2- Cantidad de mujeres\n3- Cantidad de hombre\n4-Cantidad de personas no binarioas\n5- Promedio de edades\n6- Total recaudado en cuotas\n7- Salir del programa"))
+const listadoMenu = () => parseInt(prompt("Menú:\n1- Ingresar socios\n2- Cantidad de mujeres\n3- Cantidad de hombre\n4- Cantidad de personas no binarioas\n5- Promedio de edades\n6- Total recaudado en cuotas\n7- Mostrar lista de deudores\n8- Salir del programa"))
 let cantMuj = () => alert("Hay " + cantMujeres + " mujeres.")
 let cantHom = () => alert("Hay " + cantHombres + " hombres.")
 let cantNB = () => alert("Hay " + cantNoBinarios + " personas no binarias.")
-let promEdades = () => alert("El promedio de edades es de " + parseInt(totalEdades / socios.length) + " años.")
-let recaudacionCuotas = () => alert("En total se recaudaron $" + valorCuota * socios.length + " en concepto de cuotas.")
+let promEdades = () => {
+    let totalEdades = socios.reduce( (acumulador, elemento) => acumulador + elemento.edad, 0)
+    alert("El promedio de edades es de " + Math.floor(totalEdades / socios.length) + " años.")
+}
+let recaudacionCuotas = () => {
+    alert("En total se recaudaron $" + valorCuota * (socios.length - sociosDeudores.length) + " en concepto de cuotas.")
+}
 
 class Socio {
     constructor(nroSocio, nombre, apellido, edad, genero, cuotaPaga) {
@@ -38,11 +30,11 @@ class Socio {
     }
 }
 
-function agregarSocio(nroSocio) {
+function agregarSocio() {
     const ingValidGenero = function() {
         let genero
         do{
-            genero = prompt("Ingrese el genero del socio (F, M ó NB)" + nroSocio)
+            genero = prompt("Ingrese el genero del socio " + nroSocio + " (F, M ó NB)")
             genero = genero.toUpperCase()
         }while(genero!=='M' && genero!=='F' && genero!=='NB')
         return genero
@@ -50,16 +42,15 @@ function agregarSocio(nroSocio) {
     const ingValidCuota = function() {
         let cuota
         do{
-            cuota = prompt("¿Pagó la última cuota? (V ó F)");
+            cuota = prompt("¿Pagó la última cuotael socio " + nroSocio + "? (V ó F)");
             cuota = cuota.toUpperCase()
         }while(cuota!=='V' && cuota!=='F')
         return cuota
     }
 
-    let nombre = prompt("Ingrese el nombre");
-    let apellido = prompt("Ingrese el apellido");
-    let edad = parseInt(prompt("Ingrese la edad"));
-    totalEdades += edad
+    let nombre = prompt("Ingrese el nombre del socio " + nroSocio);
+    let apellido = prompt("Ingrese el apellido del socio " + nroSocio);
+    let edad = parseInt(prompt("Ingrese la edad del socio " + nroSocio));
     let genero = ingValidGenero()
     if (genero == 'F') {
         cantMujeres += 1
@@ -82,7 +73,18 @@ function agregarSocio(nroSocio) {
         cuotaPaga
     );
     socios.push(socioARegistrar);
+    if(cuotaPaga == false){
+        sociosDeudores.push(socioARegistrar)
+    }
     return socios;
+}
+
+function mostrarListaDeudores() {
+    sociosDeudores.forEach((elemento) => {
+        for (const propiedad in elemento) {
+            console.log(`${propiedad}: ${elemento[propiedad]}`);
+            }
+        })
 }
 
 function tareasMenu(op) {
@@ -90,10 +92,10 @@ function tareasMenu(op) {
         case 1:
             const ingNumSocio = () => parseInt(prompt("Ingrese el número de socio (0 para salir: )"))
 
-            numSocio = ingNumSocio()
-            while (numSocio != 0) {
+            nroSocio = ingNumSocio()
+            while (nroSocio != 0) {
                 socios = agregarSocio();
-                numSocio = ingNumSocio()
+                nroSocio = ingNumSocio()
             }
             break
         case 2:
@@ -112,6 +114,9 @@ function tareasMenu(op) {
             recaudacionCuotas()
             break
         case 7:
+            mostrarListaDeudores()
+            break
+        case 8:
             alert("Fin del programa")
             break
     }
@@ -121,9 +126,9 @@ function main() {
     do {
         do {
             opc = listadoMenu()
-        } while (opc < 1 || opc > 7)
+        } while (opc < 1 || opc > 8)
         tareasMenu(opc)
-    } while (opc !== 7)
+    } while (opc !== 8)
 }
 
 main();
