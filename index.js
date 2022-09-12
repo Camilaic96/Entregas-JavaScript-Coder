@@ -1,8 +1,9 @@
 /*
 Se tienen los siguientes datos de los N socios de un club:
 Número de socio
+Nombre y apellido
 Edad
-Sexo (F ó M)
+Sexo (F, M ó NB)
 Importe de la cuota
 
 Se quiere saber (mostrar opciones en menú):
@@ -10,68 +11,119 @@ a) Cantidad de mujeres y cantidad de hombres
 b) Promedio de edad de todos socios
 c) Total recaudado por el club en concepto de cuotas
 */
-
 let opc
-let cantSocIngresados = 0
 let totalEdades = 0
 let cantMujeres = 0
 let cantHombres = 0
+let cantNoBinarios = 0
 const valorCuota = 1000
+let socios = []
+let nroSocio
 
-const listadoMenu = () => alert("Menú:\n1- Ingresar socios\n2- Cantidad de mujeres\n3- Cantidad de hombre\n4- Promedio de edades\n5- Total recaudado en cuotas\n6- Salir del programa")
-let cantMuj = (cantMuj) => alert("Hay " + cantMuj + " mujeres.")
-let cantHom = (cantHom) => alert("Hay " + cantHom + " hombres.")
-let promEdades = (cantSoc, totalEd) => alert("El promedio de edades es de " + parseInt(totalEd / cantSoc) + " años.")
-let  recaudacionCuotas = (cantSoc, valorCuota) => alert("En total se recaudaron $" + valorCuota * cantSoc + " en concepto de cuotas.")
+const listadoMenu = () => parseInt(prompt("Menú:\n1- Ingresar socios\n2- Cantidad de mujeres\n3- Cantidad de hombre\n3-Cantidad de personas no binarioas\n5- Promedio de edades\n6- Total recaudado en cuotas\n7- Salir del programa"))
+let cantMuj = () => alert("Hay " + cantMujeres + " mujeres.")
+let cantHom = () => alert("Hay " + cantHombres + " hombres.")
+let cantNB = () => alert("Hay " + cantNB + " personas no binarias.")
+let promEdades = () => alert("El promedio de edades es de " + parseInt(totalEdades / socios.length) + " años.")
+let recaudacionCuotas = () => alert("En total se recaudaron $" + valorCuota * socios.length + " en concepto de cuotas.")
+
+class Socio {
+    constructor(nroSocio, nombre, apellido, edad, genero, cuotaPaga) {
+        this.nroSocio = nroSocio;
+        this.nombre = nombre.toUpperCase();
+        this.apellido = apellido.toUpperCase();
+        this.edad = edad;
+        this.genero = genero;
+        this.cuotaPaga = cuotaPaga
+    }
+}
+
+function agregarSocio(nroSocio) {
+    const ingValidGenero = function() {
+        let genero
+        do{
+            genero = prompt("Ingrese el genero del socio (F, M ó NB)" + nroSocio)
+            genero = genero.toUpperCase()
+        }while(genero!=='M' && genero!=='F' && genero!=='NB')
+        return genero
+    }
+    const ingValidCuota = function() {
+        let cuota
+        do{
+            cuota = prompt("¿Pagó la última cuota? (V ó F)");
+            cuota = cuota.toUpperCase()
+        }while(cuota!=='V' && cuota!=='F')
+        return cuota
+    }
+
+    let nombre = prompt("Ingrese el nombre");
+    let apellido = prompt("Ingrese el apellido");
+    let edad = parseInt(prompt("Ingrese la edad"));
+    totalEdades += edad
+    let genero = ingValidGenero()
+    if (genero == 'F') {
+        cantMujeres += 1
+    } else if (genero == 'M'){
+        cantHombres += 1
+    } else {
+        cantNoBinarios += 1
+    }
+    let cuotaPaga = false
+    if (ingValidCuota() == 'V') {
+        cuotaPaga = true
+    }
+    
+    let socioARegistrar = new Socio(
+        nroSocio,
+        nombre,
+        apellido,
+        edad,
+        genero,
+        cuotaPaga
+    );
+    socios.push(socioARegistrar);
+    return socios;
+}
 
 function tareasMenu(op) {
-    switch(op){
+    switch (op) {
         case 1:
-            let numSocio
-            let genero 
             const ingNumSocio = () => parseInt(prompt("Ingrese el número de socio (0 para salir: )"))
-            const ingValidGenero = function() {
-                do{
-                    genero = prompt("Ingrese el genero del socio " + numSocio)
-                    genero = genero.toUpperCase()
-                }while(genero!=='M' && genero!=='F')
-                return genero
-            }
-            const incrementoVal = (valor, incr) => valor = valor + incr
-            
+
             numSocio = ingNumSocio()
-            while (numSocio != 0){
-                cantSocIngresados = incrementoVal (cantSocIngresados, 1)
-                if(ingValidGenero() == 'F'){
-                    cantMujeres = incrementoVal (cantMujeres, 1)
-                } else {
-                    cantHombres = incrementoVal (cantHombres, 1)
-                }
-                totalEdades = incrementoVal (totalEdades, parseInt(prompt("Ingrese la edad del socio " + numSocio)))                    
+            while (numSocio != 0) {
+                socios = agregarSocio();
                 numSocio = ingNumSocio()
             }
             break
-        case 2: 
-            cantMuj(cantMujeres) 
+        case 2:
+            cantMuj()
             break
-        case 3: 
-            cantHom(cantHombres)
+        case 3:
+            cantHom()
             break
-        case 4: 
-            promEdades(cantSocIngresados, totalEdades)
+        case 4:
+            cantNB()
             break
-        case 5: 
-            recaudacionCuotas(cantSocIngresados, valorCuota)
+        case 5:
+            promEdades()
             break
         case 6:
+            recaudacionCuotas()
+            break
+        case 7:
             alert("Fin del programa")
             break
     }
 }
-do{
+
+function main() {
     do {
-        listadoMenu()
-        opc = parseInt(prompt("Ingrese la opción deseada: "))
-    } while (opc < 1 || opc > 6)
-    tareasMenu(opc)
-} while (opc !== 6)
+        do {
+            opc = listadoMenu()
+        } while (opc < 1 || opc > 7)
+        tareasMenu(opc)
+    } while (opc !== 7)
+}
+
+main();
