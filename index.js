@@ -20,10 +20,10 @@ const valorCuota = 1000
 let socios = []
 let nroSocio
 
-const listadoMenu = () => parseInt(prompt("Menú:\n1- Ingresar socios\n2- Cantidad de mujeres\n3- Cantidad de hombre\n3-Cantidad de personas no binarioas\n5- Promedio de edades\n6- Total recaudado en cuotas\n7- Salir del programa"))
+const listadoMenu = () => parseInt(prompt("Menú:\n1- Ingresar socios\n2- Cantidad de mujeres\n3- Cantidad de hombre\n4-Cantidad de personas no binarioas\n5- Promedio de edades\n6- Total recaudado en cuotas\n7- Salir del programa"))
 let cantMuj = () => alert("Hay " + cantMujeres + " mujeres.")
 let cantHom = () => alert("Hay " + cantHombres + " hombres.")
-let cantNB = () => alert("Hay " + cantNB + " personas no binarias.")
+let cantNB = () => alert("Hay " + cantNoBinarios + " personas no binarias.")
 let promEdades = () => alert("El promedio de edades es de " + parseInt(totalEdades / socios.length) + " años.")
 let recaudacionCuotas = () => alert("En total se recaudaron $" + valorCuota * socios.length + " en concepto de cuotas.")
 
