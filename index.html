@@ -5,18 +5,126 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- favicon comienzo -->
+    <!-- favicon fin -->
+
+    <!----------- linkeo libreria awesome comienzo -------------->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+        integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!----------- linkeo libreria awesome fin ------------------->
+
     <!----------- linkeo libreria bootstrap comienzo -------------->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
         integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
     <!----------- linkeo libreria bootstrap fin ------------------->
-    <title>Document</title>
+
+    <!----------- linkeo libreria AOS comienzo -------------->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!----------- linkeo libreria AOS fin ------------------->
+
+    <!----------- linkeo archivo css comienzo ------------------->
+    <!--
+    <link rel="stylesheet" href="./scss/estilos.css">
+    -->
+    <!----------- linkeo archivo css fin ------------------------>
+
+    <title>Gestión socios</title>
 </head>
 
 <body>
-    <h2 id="titulo-info-socios"></h2>
-    <div id="datos-socios"></div>
-    <div id="contenedor-deudores" class="row mx-auto"></div>
+    <header>
+        <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                        Gestión socios
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="#buscar-datos-socio">Buscar datos socio</a>
+                        <a class="dropdown-item" href="#agregar-socio">Agregar nuevo socio</a>
+                        <a class="dropdown-item" href="#eliminar-socio">Eliminar socio</a>
+                        <a class="dropdown-item" href="#cambiar-datos-socio">Cambiar datos socio</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                        Estadísticas
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="#socios-por-genero">Cantidad socios por género</a>
+                        <a class="dropdown-item" href="#promedio-edades">Promedio edades</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                        Cuotas
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="#cambio-costo-cuota">Cambiar costo cuota</a>
+                        <a class="dropdown-item" href="#lista-deudores">Lista deudores mes en curso</a>
+                        <a class="dropdown-item" href="#total-recaudaciones">Total recaudaciones mes en curso</a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section id="" class="container-fluid">
+            <h2>Gestión Socios</h2>
+            <div class="row">
+                <button type="button" class="btn btn-primary m-4" id="buscar-datos-socio">Buscar datos socio</button>
+                <button type="button" class="btn btn-primary m-4" id="agregar-socio">
+                    Agregar nuevo socio
+                </button>
+                <button type="button" class="btn btn-primary m-4" id="eliminar-socio">Eliminar socio</button>
+                <button type="button" class="btn btn-primary m-4" id="cambiar-datos-socio">Cambiar datos socio</button>
+                <div class="container p-3">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div id="contenedorSocios" class="row"></div>
+                        </div>
+                        <div class="col-md-6" id="form-agregar-socio">
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="" class="container-fluid">
+            <h2>Estadísticas</h2>
+            <div class="row">
+                <button type="button" class="btn btn-success m-4" id="socios-por-genero">Cantidad de socios por género</button>
+                <button type="button" class="btn btn-success m-4" id="promedio-edades">Promedio edades</button>
+            </div>
+        </section>
+        <section id="" class="container-fluid">
+            <h2>Cuotas</h2>
+            <div class="row">
+                <button type="button" class="btn btn-danger m-4" id="cambio-costo-cuota">Cambiar costo cuota</button>
+                <button type="button" class="btn btn-danger m-4" id="lista-deudores">
+                    Lista deudores mes en curso
+                </button>
+                <button type="button" class="btn btn-danger m-4" id="total-recaudaciones">Total recaudaciones mes en curso</button>
+            </div>
+        </section>
+        <div id="contenedor-mostrar"></div>
+    </main>
+    <footer class="footer">
+        <p>Copyright Camila Cuello © Todos los derechos reservados</p>
+    </footer>
 
+    <!-- boton subir inicio-->
+    <div class="boton-subir">
+        <a href="#"><i class="fa-solid fa-angle-up"></i></a>
+    </div>
+    <!-- boton subir fin-->
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
     </script>
