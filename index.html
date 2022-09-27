@@ -25,9 +25,7 @@
     <!----------- linkeo libreria AOS fin ------------------->
 
     <!----------- linkeo archivo css comienzo ------------------->
-    <!--
     <link rel="stylesheet" href="./scss/estilos.css">
-    -->
     <!----------- linkeo archivo css fin ------------------------>
 
     <title>Gestión socios</title>
@@ -35,7 +33,7 @@
 
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <nav class="navbar navbar-expand-sm">
             <ul class="navbar-nav">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
@@ -68,48 +66,82 @@
                     </div>
                 </li>
             </ul>
+            <div class="d-flex ml-auto">
+                <div id="contenedorUsuario" hidden>
+                    <p id="textoUsuario">Bienvenido:</p>
+                </div>
+                <div id="contenedorIdentificacion">
+                    <form id="formularioIdentificacion" class="d-flex">
+                        <div>
+                            <input type="text" class="form-control" id="inputUsuario" required />
+                        </div>
+                        <div>
+                            <button type="submit" class="btn btn-nav">Identificarse</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="d-flex ml-auto">
+                <button class="btn btn-nav" id="limpiarStorage">Limpiar Storage</button>
+            </div>
         </nav>
     </header>
     <main>
-        <section id="" class="container-fluid">
-            <h2>Gestión Socios</h2>
-            <div class="row">
-                <button type="button" class="btn btn-primary m-4" id="buscar-datos-socio">Buscar datos socio</button>
-                <button type="button" class="btn btn-primary m-4" id="agregar-socio">
-                    Agregar nuevo socio
-                </button>
-                <button type="button" class="btn btn-primary m-4" id="eliminar-socio">Eliminar socio</button>
-                <button type="button" class="btn btn-primary m-4" id="cambiar-datos-socio">Cambiar datos socio</button>
-                <div class="container p-3">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div id="contenedorSocios" class="row"></div>
-                        </div>
-                        <div class="col-md-6" id="form-agregar-socio">
-                            
+        <section class="container-fluid sec" id="gestion-socios">
+            <h2 class="titulo-sec">Gestión Socios</h2>
+            <div class="row gestion-socios">
+                <div class="fila-botones col-4">
+                    <button type="button" class="btn btn-grad" id="buscar-datos-socio">Buscar datos socio</button>
+                    <button type="button" class="btn btn-grad" id="agregar-socio">
+                        Agregar nuevo socio
+                    </button>
+                    <button type="button" class="btn btn-grad" id="eliminar-socio">Eliminar socio</button>
+                    <button type="button" class="btn btn-grad" id="cambiar-datos-socio">Cambiar datos socio</button>
+                    <div class="container p-3">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div id="contenedorSocios" class="row"></div>
+                            </div>
+                            <div class="col-md-6" id="form-agregar-socio">
+
+                            </div>
                         </div>
                     </div>
                 </div>
+                <div id="cont-mostrar-gestion-socios" class="col-8">
+                </div>
             </div>
         </section>
-        <section id="" class="container-fluid">
-            <h2>Estadísticas</h2>
-            <div class="row">
-                <button type="button" class="btn btn-success m-4" id="socios-por-genero">Cantidad de socios por género</button>
-                <button type="button" class="btn btn-success m-4" id="promedio-edades">Promedio edades</button>
+        <section class="container-fluid sec" id="estadisticas">
+            <h2 class="titulo-sec">Estadísticas</h2>
+            <div class="row estadisticas">
+                <div class="col-3">
+                    <img src="./assets/img/estadisticas.png" alt="grafico circular" class="img-fluid">
+                </div>
+                <div class="fila-botones col-3">
+                    <button type="button" class="btn btn-grad" id="socios-por-genero">Cantidad de socios por
+                        género</button>
+                    <button type="button" class="btn btn-grad" id="promedio-edades">Promedio edades</button>
+                </div>
+                <div id="cont-mostrar-estadisticas" class="col-6">
+                </div>
             </div>
         </section>
-        <section id="" class="container-fluid">
-            <h2>Cuotas</h2>
-            <div class="row">
-                <button type="button" class="btn btn-danger m-4" id="cambio-costo-cuota">Cambiar costo cuota</button>
-                <button type="button" class="btn btn-danger m-4" id="lista-deudores">
-                    Lista deudores mes en curso
-                </button>
-                <button type="button" class="btn btn-danger m-4" id="total-recaudaciones">Total recaudaciones mes en curso</button>
+        <section class="container-fluid sec" id="cuotas">
+            <h2 class="titulo-sec">Cuotas</h2>
+            <div class="row cuotas">
+                <div id="grafico-dibujo" class="col-3">
+                    <img src="./assets/img/cuotas.png" alt="signo pesos" class="img-fluid p-5">
+                </div>
+                <div class="fila-botones col-3">
+                    <button type="button" class="btn btn-grad" id="cambio-costo-cuota">Cambiar costo cuota</button>
+                    <button type="button" class="btn btn-grad" id="lista-deudores">Lista deudores mes en curso</button>
+                    <button type="button" class="btn btn-grad" id="total-recaudaciones">Total recaudaciones mes en curso</button>
+                </div>
+                <div id="cont-mostrar-cuotas" class="col-6">
+                </div>
             </div>
         </section>
-        <div id="contenedor-mostrar"></div>
     </main>
     <footer class="footer">
         <p>Copyright Camila Cuello © Todos los derechos reservados</p>

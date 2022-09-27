@@ -1,0 +1,148 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+//font-family: 'Anton', sans-serif;
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    overflow-x: hidden;
+}
+
+nav {
+    background-image: linear-gradient(to top, #0f9b0f 0%, #3cba92 100%);
+
+    a {
+        text-decoration: none;
+        color: black;
+        font-size: 20px;
+        font-weight: 400;
+        margin: 5px;
+    }
+
+    a:hover {
+        color: white;
+    }
+
+    .btn-nav {
+        background-image: linear-gradient(-20deg, #e9defa 0%, #fbfcdb 100%);
+        margin-left: 5px
+    }
+
+    #textoUsuario{
+        color: white;
+        font-size: 28px;
+        font-weight: 600;
+        text-shadow: 0 0 10px black;
+        margin: auto;
+    }
+}
+
+main {
+    margin-top: 20px;
+    background-image: linear-gradient(to top, #c1dfc4 0%, #deecdd 100%);
+
+    .sec {
+        padding: 0;
+        min-height: 400px;
+        text-align: center;
+        //background-image: linear-gradient(to top, #c1dfc4 0%, #deecdd 100%);
+
+        .titulo-sec {
+            color: white;
+            margin: 0;
+            padding: 10px;
+            font-size: 40px;
+            font-family: 'Anton', sans-serif;
+            text-shadow: 0 0 20px black;
+            background-color: #175c3e;
+        }
+
+        .fila-botones {
+
+            .btn-grad {
+                background-image: linear-gradient(to right, #000000 0%, #0f9b0f 51%, #000000 100%);
+                min-height: 100px;
+                width: 300px;
+                margin: 30px;
+                padding: 15px 45px;
+                text-align: center;
+                text-transform: uppercase;
+                transition: 0.5s;
+                background-size: 200% auto;
+                color: white;
+                box-shadow: 0 0 20px #eee;
+                border-radius: 10px;
+                display: block;
+            }
+    
+            .btn-grad:hover {
+                background-position: right center;
+                /* change the direction of the change here */
+                color: #fff;
+                text-decoration: none;
+            }
+        }
+    }
+
+    .estadisticas{
+        display: flex;
+        justify-content: center;
+        justify-items: center;
+        align-items: center;
+        align-content: center;
+    }
+
+    .cuotas{
+        display: flex;
+        justify-content: center;
+        justify-items: center;
+        align-items: center;
+        align-content: center;
+
+        #cont-mostrar-cuotas{
+            align-items: center;
+            min-height: 150px;
+            margin: auto;
+            padding: 20px;
+        }
+        #mostrar-deudores{
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+    }
+}
+
+footer{
+    background-color: #000000;
+    p{
+        margin: 0;
+        padding: 0;
+        color: #fff;
+    } 
+}
+
+.boton-subir,
+.botones-redes {
+    z-index: 15;
+    position: fixed;
+    bottom: 250px;
+    right: 5px;
+    background-image: linear-gradient(to top, #02492a 0%, #249471 100%);
+    border-radius: 100%;
+    border: solid 2px #fff;
+    box-shadow: 0 0 15px #0ba360;
+}
+
+.boton-subir i,
+.botones-redes i {
+    padding: 10px;
+    font-size: 18px;
+    color: #fff;
+}
