@@ -103,12 +103,136 @@
                                 <div id="contenedorSocios" class="row"></div>
                             </div>
                             <div class="col-md-6" id="form-agregar-socio">
-
                             </div>
                         </div>
                     </div>
                 </div>
                 <div id="cont-mostrar-gestion-socios" class="col-8">
+                    <div id="contenedor-form-ingreso" hidden>
+                        <!--para formulario ingreso-->
+                        <h4>Formulario ingreso</h4>
+                        <form id="formulario-ingreso-socio">
+                            <div class="mb-3">
+                                <label class="form-label">Nº de socio</label>
+                                <input type="text" class="form-control" id="inputNroSocio" placeholder="nº de Socio"
+                                    required />
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Nombre</label>
+                                <input type="text" class="form-control" id="inputNombreSocio" placeholder="Nombre"
+                                    required />
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Apellido</label>
+                                <input type="text" class="form-control" id="inputApellidoSocio" placeholder="Apellido"
+                                    required />
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Edad</label>
+                                <input type="number" class="form-control" id="inputEdad" placeholder="Edad" required />
+                            </div>
+
+                            <div>
+                                <label class="form-label">Género</label>
+                            </div>
+                            <div class="form-check-inline">
+                                <input class="form-check-input" type="radio" name="genero" id="genero-m" value="option1"
+                                    required>
+                                <label class="form-check-label" for="exampleRadios1">Mujer</label>
+                            </div>
+                            <div class="form-check-inline">
+                                <input class="form-check-input" type="radio" name="genero" id="genero-h" value="option2"
+                                    required>
+                                <label class="form-check-label" for="exampleRadios1">Hombre</label>
+                            </div>
+                            <div class="form-check-inline mb-3">
+                                <input class="form-check-input" type="radio" name="genero" id="genero-nb"
+                                    value="option3" required>
+                                <label class="form-check-label" for="exampleRadios2">No binarie</label>
+                            </div>
+
+                            <div>
+                                <label class="form-label">¿Pagó cuota?</label>
+                            </div>
+                            <div class="form-check-inline">
+                                <input class="form-check-input" type="radio" name="exampleRadios" id="cuotaPaga"
+                                    value="option1" required>
+                                <label class="form-check-label" for="exampleRadios1">Sí</label>
+                            </div>
+                            <div class="form-check-inline mb-3">
+                                <input class="form-check-input" type="radio" name="exampleRadios" id="cuotaNoPaga"
+                                    value="option2" required>
+                                <label class="form-check-label" for="exampleRadios2">No</label>
+                            </div>
+
+                            <div class="mb-3">
+                                <button type="submit" class="btn btn-success" id="boton-registrar">Registrar</button>
+                            </div>
+                            <button type="button" class="btn btn-success m-4" id="boton-cerrar-form">Cerrar</button>
+                        </form>
+                    </div>
+                    <div class="row" id="contenedor-form-cambio" hidden>
+                        <div class="col-6">
+                            <h4>Datos actuales del socio</h4>
+                            <div id="contenedor-datos-actuales"></div>
+                        </div>
+                        <div class="col-6">
+                            <h4>Nuevos datos a cargar</h4>
+                            <form id="formulario-cambio">
+                                <div class="mb-3">
+                                    <label class="form-label">Nº de socio</label>
+                                    <input type="text" class="form-control" id="inputNroSocioCambio" placeholder="nº de Socio" />
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Nombre</label>
+                                    <input type="text" class="form-control" id="inputNombreSocioCambio" placeholder="Nombre" />
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Apellido</label>
+                                    <input type="text" class="form-control" id="inputApellidoSocioCambio" placeholder="Apellido" />
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Edad</label>
+                                    <input type="number" class="form-control" id="inputEdadCambio" placeholder="Edad" />
+                                </div>
+
+                                <div>
+                                    <label class="form-label">Género</label>
+                                </div>
+                                <div class="form-check-inline">
+                                    <input class="form-check-input" type="radio" name="genero" id="genero-m-cambio" value="option1">
+                                    <label class="form-check-label" for="exampleRadios1">Mujer</label>
+                                </div>
+                                <div class="form-check-inline">
+                                    <input class="form-check-input" type="radio" name="genero" id="genero-h-cambio" value="option2">
+                                    <label class="form-check-label" for="exampleRadios1">Hombre</label>
+                                </div>
+                                <div class="form-check-inline mb-3">
+                                    <input class="form-check-input" type="radio" name="genero" id="genero-nb-cambio" value="option3">
+                                    <label class="form-check-label" for="exampleRadios2">No binarie</label>
+                                </div>
+
+                                <div>
+                                    <label class="form-label">¿Pagó cuota?</label>
+                                </div>
+                                <div class="form-check-inline">
+                                    <input class="form-check-input" type="radio" name="exampleRadios" id="cuotaPaga-cambio" value="option1">
+                                    <label class="form-check-label" for="exampleRadios1">Sí</label>
+                                </div>
+                                <div class="form-check-inline mb-3">
+                                    <input class="form-check-input" type="radio" name="exampleRadios" id="cuotaNoPaga-cambio" value="option2">
+                                    <label class="form-check-label" for="exampleRadios2">No</label>
+                                </div>
+
+                                <div class="mb-3">
+                                    <button type="submit" class="btn btn-success" id="boton-registrar-cambio">Registrar</button>
+                                </div>
+                            </form>
+                        </div>
+                        <button type="button" class="btn btn-success m-4" id="boton-cerrar-form-cambio">Cerrar</button>
+                    </div>
                 </div>
             </div>
         </section>
@@ -124,6 +248,7 @@
                     <button type="button" class="btn btn-grad" id="promedio-edades">Promedio edades</button>
                 </div>
                 <div id="cont-mostrar-estadisticas" class="col-6">
+                    <canvas id="graf-socios-por-genero" style="width:100%;max-width:700px" hidden></canvas>
                 </div>
             </div>
         </section>
@@ -136,7 +261,8 @@
                 <div class="fila-botones col-3">
                     <button type="button" class="btn btn-grad" id="cambio-costo-cuota">Cambiar costo cuota</button>
                     <button type="button" class="btn btn-grad" id="lista-deudores">Lista deudores mes en curso</button>
-                    <button type="button" class="btn btn-grad" id="total-recaudaciones">Total recaudaciones mes en curso</button>
+                    <button type="button" class="btn btn-grad" id="total-recaudaciones">Total recaudaciones mes en
+                        curso</button>
                 </div>
                 <div id="cont-mostrar-cuotas" class="col-6">
                 </div>
@@ -153,10 +279,7 @@
     </div>
     <!-- boton subir fin-->
 
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>
-        AOS.init();
-    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
     </script>
