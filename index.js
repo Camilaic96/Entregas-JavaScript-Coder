@@ -52,7 +52,7 @@ let sociosDeudores = []
 let usuario
 let valorCuota = 1000
 
-let socioACambiar = {}
+let socioACambiar
 
 let formularioCambioCostoCuota
 
@@ -236,7 +236,7 @@ function validarFormulario(event) {
         cuotaPaga = false
     }
 
-    const idExiste = socios.some((socio) => socio.nroSocio === nroSocio);
+    const idExiste = socios.some((socio) => socio?.nroSocio === nroSocio);
     if (!idExiste) {
         let socio = new Socio(
             nroSocio,
@@ -263,9 +263,17 @@ function botonCerrarCartel(elem, id, btn) {
     }
 }
 
+function cerrar(id, boton, contenedor) {
+    let botonCerrar = document.getElementById(id)
+    botonCerrar.onclick = () => {
+        boton.disabled = false
+        contenedor.hidden = true
+    }
+}
+
 function buscarSocio(nro) {
-    let elementoEncontrado = socios.find((socio) => socio.nroSocio == nro)
-    if (elementoEncontrado != undefined) {
+    let elementoEncontrado = socios.find((socio) => socio?.nroSocio == nro)
+    if (elementoEncontrado) {
         return elementoEncontrado
     } else {
         return -1
@@ -297,14 +305,6 @@ function mostrarSocio(elementoEncontrado, mensaje) {
         contenedorMostrarGestionSocios.append(cartel)
     }
     return cartel
-}
-
-function cerrar(id, boton, contenedor) {
-    let botonCerrar = document.getElementById(id)
-    botonCerrar.onclick = () => {
-        boton.disabled = false
-        contenedor.hidden = true
-    }
 }
 
 //section GESTION SOCIOS inicio
@@ -350,7 +350,7 @@ function agregarSocio() {
 
 //ELIMINAR SOCIO
 function eliminarSocio(nroSocio) {
-    let indiceBorrar = socios.findIndex((socio) => Number(socio.nroSocio) === Number(nroSocio));
+    let indiceBorrar = socios.findIndex((socio) => Number(socio?.nroSocio) === Number(nroSocio));
     if (indiceBorrar != -1) {
         socios.splice(indiceBorrar, 1)
         actualizarSociosStorage()
@@ -424,20 +424,12 @@ function crearTextoForm(dato) {
 
 function validarFormularioCambio(event) {
     event.preventDefault();
-    let nroSocioCambio
-    let nombreCambio
-    let apellidoCambio
-    let edadCambio
+    let nroSocioCambio = parseInt(inputNroSocioCambio.value) || socioACambiar.nroSocio
+    let nombreCambio = inputNombreCambio.value || socioACambiar.nombre
+    let apellidoCambio = inputApellidoCambio.value || socioACambiar.apellido
+    let edadCambio = parseInt(inputEdadCambio.value) || socioACambiar.edad
     let generoCambio
     let cuotaPagaCambio
-
-    inputNroSocioCambio.value != "" ? nroSocioCambio = parseInt(inputNroSocioCambio.value) : nroSocioCambio = socioACambiar.nroSocio
-
-    inputNombreCambio.value != "" ? nombreCambio = inputNombreCambio.value : nombreCambio = socioACambiar.nombre
-
-    inputApellidoCambio.value != "" ? apellidoCambio = inputApellidoCambio.value : apellidoCambio = socioACambiar.apellido
-
-    inputEdadCambio.value != "" ? edadCambio = parseInt(inputEdadCambio.value) : edadCambio = socioACambiar.edad
 
     if (inputGeneroCambioM.checked) {
         generoCambio = "F"
@@ -484,7 +476,7 @@ function cambiarDatosSocio() {
         let botonCamb = document.getElementById("buscar-socio")
         botonCamb.onclick = () => {
             numero = parseInt(inputBuscarSocioCambio.value)
-            socioACambiar = buscarSocio(numero)
+            socioACambiar = {... buscarSocio(numero)}
             crearTextoForm(socioACambiar)
             contenedorBuscarSocioCambio.hidden = true
             contenedorFormIngresoCambio.hidden = false
@@ -500,11 +492,7 @@ function cambiarDatosSocio() {
 //CANTIDAD SOCIOS POR GENERO
 function contar(letra) {
     dato = 0
-    for (const socio of socios) {
-        if (socio.genero === letra) {
-            dato++
-        }
-    }
+    for (const socio of socios) { socio?.genero === letra && dato++ }
     return dato
 }
 
@@ -554,9 +542,7 @@ function sociosPorGenero() {
 function promedioEdades() {
     botonPromedioEdades.disabled = true
     let totalEdades = 0
-    for (const socio of socios) {
-        totalEdades += socio.edad
-    }
+    for (const socio of socios) {totalEdades += socio?.edad}
     let cartel = document.createElement("div")
     cartel.innerHTML = `
         <p>El promedio de edades de los socios es de ${parseInt(totalEdades / socios.length)} años</p>
@@ -612,11 +598,7 @@ function costoCuota() {
 //LISTA DEUDORES MES EN CURSO
 function cargarListaDeudores() {
     sociosDeudores.splice(0, sociosDeudores.length)
-    for (const socio of socios) {
-        if (socio.cuotaPaga === false) {
-            sociosDeudores.push(socio)
-        }
-    }
+    for (const socio of socios) { socio?.cuotaPaga === false && sociosDeudores.push(socio)}
 }
 
 function mostrarListaDeudores() {
@@ -658,7 +640,7 @@ function listaDeudores() {
 calcularRecaudacion = () => {
     let totalRecaud = 0
     for (const socio of socios) {
-        if (socio.cuotaPaga === true) {
+        if (socio?.cuotaPaga === true) {
             totalRecaud += valorCuota
         }
     }
