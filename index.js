@@ -299,16 +299,6 @@ function mostrarSocio(elementoEncontrado, mensaje) {
     return cartel
 }
 
-function valid(datoActual, datoNuevo) {
-    let dato
-    if (datoNuevo) {
-        dato = datoNuevo
-    } else {
-        dato = datoActual
-    }
-    return dato
-}
-
 function cerrar(id, boton, contenedor) {
     let botonCerrar = document.getElementById(id)
     botonCerrar.onclick = () => {
@@ -426,7 +416,6 @@ function crearTextoForm(dato) {
     let contenedorTextoGenero = document.getElementById("text-genero-cambiar")
     contenedorTextoGenero.append(textoGenero)
 
-
     let textoCuotaPaga = document.createElement("div")
     textoCuotaPaga.innerHTML = `<p class="card-text">¿Cuota paga?: <b>${dato.cuotaPaga}</b></p>`
     let contenedorTextoCuotaPaga = document.getElementById("text-cuotaPaga-cambiar")
@@ -442,29 +431,13 @@ function validarFormularioCambio(event) {
     let generoCambio
     let cuotaPagaCambio
 
-    if(parseInt(inputNroSocioCambio.value) != NaN) {
-        nroSocioCambio = parseInt(inputNroSocioCambio.value)
-    } else {
-        nroSocioCambio = socioACambiar.nroSocio
-    }
+    inputNroSocioCambio.value != "" ? nroSocioCambio = parseInt(inputNroSocioCambio.value) : nroSocioCambio = socioACambiar.nroSocio
 
-    if(inputNombreCambio.value != ""){
-        nombreCambio = inputNombreCambio.value
-    } else {
-        nombreCambio = socioACambiar.nombre
-    }
+    inputNombreCambio.value != "" ? nombreCambio = inputNombreCambio.value : nombreCambio = socioACambiar.nombre
 
-    if(inputApellidoCambio.value != ""){
-        apellidoCambio = inputApellidoCambio.value
-    } else {
-        apellidoCambio = socioACambiar.apellido
-    }
+    inputApellidoCambio.value != "" ? apellidoCambio = inputApellidoCambio.value : apellidoCambio = socioACambiar.apellido
 
-    if(parseInt(inputEdadCambio.value) != NaN){
-        edadCambio = parseInt(inputEdadCambio.value)
-    } else {
-        edadCambio = socioACambiar.edad
-    }
+    inputEdadCambio.value != "" ? edadCambio = parseInt(inputEdadCambio.value) : edadCambio = socioACambiar.edad
 
     if (inputGeneroCambioM.checked) {
         generoCambio = "F"
@@ -529,7 +502,7 @@ function contar(letra) {
     dato = 0
     for (const socio of socios) {
         if (socio.genero === letra) {
-            dato += 1
+            dato++
         }
     }
     return dato
