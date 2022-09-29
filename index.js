@@ -324,15 +324,15 @@ function buscarDatosSocio() {
                     <input type="text" class="form-control" id="inputBuscarSocio" placeholder="Nº socio" required />
                 </div>
                 <div>
-                    <button type="button" class="btn btn-success" id="buscar-socio">Buscar</button>
+                    <button type="button" class="btn btn-success" id="buscar-dato-socio">Buscar</button>
                 </div>
             </form>
-            <button type="button" class="btn btn-success m-4" id="boton-cancelar-buscar">Cancelar</button>
+            <button type="button" class="btn btn-success m-4" id="boton-cancelar">Cancelar</button>
         </div>
         `
     contenedorMostrarGestionSocios.append(cartel)
-    botonCerrar(cartel, "boton-cancelar-buscar", botonBuscarDatosSocio)
-    let botonBuscarSocio = document.getElementById("buscar-socio")
+    botonCerrar(cartel, "boton-cancelar", botonBuscarDatosSocio)
+    let botonBuscarSocio = document.getElementById("buscar-dato-socio")
     botonBuscarSocio.onclick = () => {
         let nro = parseInt(inputBuscarSocio.value)
         cartel.innerHTML = ''
@@ -511,8 +511,6 @@ function validarFormularioCambio(event) {
     actualizarSociosStorage()
     botonCambiarDatosSocio.disabled = false
     contenedorFormIngresoCambio.hidden = true
-
-    cancelar("boton-cerrar-form-cambio", botonCambiarDatosSocio, contenedorFormIngresoCambio)
 }
 
 //CAMBIAR INFO DE SOCIO
@@ -525,12 +523,13 @@ function cambiarDatosSocio() {
 
         let botonCamb = document.getElementById("buscar-socio")
         botonCamb.onclick = () => {
-            numero = parseInt(inputBuscarSocio.value)
+            numero = parseInt(inputBuscarSocioCambio.value)
             socioACambiar = buscarSocio(numero)
             crearTextoForm(socioACambiar)
             contenedorBuscarSocioCambio.hidden = true
             contenedorFormIngresoCambio.hidden = false
         }
+        cancelar("boton-cerrar-form-cambio", botonCambiarDatosSocio, contenedorFormIngresoCambio)
     } else {
         alert("Identifíquese antes de cambiar datos de un socio");
     }
