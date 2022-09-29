@@ -253,11 +253,9 @@ function validarFormulario(event) {
     } else {
         alert("El id ya existe");
     }
-    let container = document.getElementById("formulario-ingreso-socio")
-    container.innerHTML = ""
 }
 
-function botonCerrar(elem, id, btn) {
+function botonCerrarCartel(elem, id, btn) {
     const botonCerrar = document.getElementById(id)
     botonCerrar.onclick = () => {
         elem.remove()
@@ -311,6 +309,14 @@ function valid(datoActual, datoNuevo) {
     return dato
 }
 
+function cerrar(id, boton, contenedor) {
+    let botonCerrar = document.getElementById(id)
+    botonCerrar.onclick = () => {
+        boton.disabled = false
+        contenedor.hidden = true
+    }
+}
+
 //section GESTION SOCIOS inicio
 //BUSCAR DATOS SOCIO
 function buscarDatosSocio() {
@@ -331,12 +337,12 @@ function buscarDatosSocio() {
         </div>
         `
     contenedorMostrarGestionSocios.append(cartel)
-    botonCerrar(cartel, "boton-cancelar", botonBuscarDatosSocio)
+    botonCerrarCartel(cartel, "boton-cancelar", botonBuscarDatosSocio)
     let botonBuscarSocio = document.getElementById("buscar-dato-socio")
     botonBuscarSocio.onclick = () => {
         let nro = parseInt(inputBuscarSocio.value)
         cartel.innerHTML = ''
-        botonCerrar(mostrarSocio(buscarSocio(nro), "Cerrar"), "boton-cerrar", botonBuscarDatosSocio)
+        botonCerrarCartel(mostrarSocio(buscarSocio(nro), "Cerrar"), "boton-cerrar", botonBuscarDatosSocio)
     }
 }
 
@@ -344,18 +350,9 @@ function buscarDatosSocio() {
 function agregarSocio() {
     if (usuario) {
         botonAgregarSocio.disabled = true
-        contenedorFormIngreso.hidden = false;
-        let botonCerrar = document.getElementById("boton-cerrar-form")
-        botonCerrar.onclick = () => {
-            contenedorFormIngreso.hidden = true
-            botonAgregarSocio.disabled = false
-        }
-        let botonRegistrarSocio = document.getElementById("boton-registrar")
-        botonRegistrarSocio.onclick = () => {
-            botonAgregarSocio.disabled = false
-            contenedorFormIngreso.hidden = true
-            alert("socio registrado")
-        }
+        contenedorFormIngreso.hidden = false 
+        cerrar("boton-cerrar-form", botonAgregarSocio, contenedorFormIngreso)
+        cerrar("boton-registrar", botonAgregarSocio, contenedorFormIngreso)
     } else {
         alert("Identifíquese antes de registrar un nuevo socio");
     }
@@ -389,13 +386,13 @@ function elimSocio() {
         </div>
         `
         contenedorMostrarGestionSocios.append(cartel)
-        botonCerrar(cartel, "boton-cancelar-eliminar", botonEliminarSocio)
+        botonCerrarCartel(cartel, "boton-cancelar-eliminar", botonEliminarSocio)
         formularioEliminarSocio = document.getElementById("formulario-eliminar-socio")
         let botonElimSocio = document.getElementById("boton-eliminar-socio")
         botonElimSocio.onclick = () => {
             let nro = parseInt(inputEliminarSocio.value)
             cartel.innerHTML = ''
-            botonCerrar(mostrarSocio(buscarSocio(nro), "Eliminar"), "boton-cerrar", botonEliminarSocio)
+            botonCerrarCartel(mostrarSocio(buscarSocio(nro), "Eliminar"), "boton-cerrar", botonEliminarSocio)
             eliminarSocio(nro)
         }
     } else {
@@ -434,14 +431,6 @@ function crearTextoForm(dato) {
     textoCuotaPaga.innerHTML = `<p class="card-text">¿Cuota paga?: <b>${dato.cuotaPaga}</b></p>`
     let contenedorTextoCuotaPaga = document.getElementById("text-cuotaPaga-cambiar")
     contenedorTextoCuotaPaga.append(textoCuotaPaga)
-}
-
-function cancelar(id, btn, contenedor) {
-    let botonCancelar = document.getElementById(id)
-    botonCancelar.onclick = () => {
-        btn.disabled = false
-        contenedor.hidden = true
-    }
 }
 
 function validarFormularioCambio(event) {
@@ -517,7 +506,7 @@ function cambiarDatosSocio() {
         botonCambiarDatosSocio.disabled = true
         contenedorBuscarSocioCambio.hidden = false
         
-        cancelar("boton-cancelar-cambiar", botonCambiarDatosSocio, contenedorBuscarSocioCambio)
+        cerrar("boton-cancelar-cambiar", botonCambiarDatosSocio, contenedorBuscarSocioCambio)
 
         let botonCamb = document.getElementById("buscar-socio")
         botonCamb.onclick = () => {
@@ -527,7 +516,7 @@ function cambiarDatosSocio() {
             contenedorBuscarSocioCambio.hidden = true
             contenedorFormIngresoCambio.hidden = false
         }
-        cancelar("boton-cerrar-form-cambio", botonCambiarDatosSocio, contenedorFormIngresoCambio)
+        cerrar("boton-cerrar-form-cambio", botonCambiarDatosSocio, contenedorFormIngresoCambio)
     } else {
         alert("Identifíquese antes de cambiar datos de un socio");
     }
@@ -580,8 +569,8 @@ function sociosPorGenero() {
         <button type="button" class="btn btn-success m-4" id="boton-cerrar">Cerrar</button>
     `
     contenedorMostrarEstad.append(cartel)
-    const botonCerrar = document.getElementById("boton-cerrar")
-    botonCerrar.onclick = () => {
+    const botonCerrarC = document.getElementById("boton-cerrar")
+    botonCerrarC.onclick = () => {
         mostrarGrafica(true, contar("F"), contar("M"), contar("NB"))
         cartel.remove()
         botonSociosPorGenero.disabled = false
@@ -602,7 +591,7 @@ function promedioEdades() {
     `
     contenedorMostrarEstad.append(cartel)
 
-    botonCerrar(cartel, "boton-cerrar", botonPromedioEdades)
+    botonCerrarCartel(cartel, "boton-cerrar", botonPromedioEdades)
 }
 //section ESTADISTICAS fin
 
@@ -616,7 +605,7 @@ function guardarCambioCostoCuota(cartel) {
             <p>El nuevo valor de la cuota es $${valorCuota}</p>
             <button type="button" class="btn btn-success m-4" id="boton-cerrar">Cerrar</button>
             `
-        botonCerrar(cartel, "boton-cerrar", botonCostoCuota)
+        botonCerrarCartel(cartel, "boton-cerrar", botonCostoCuota)
         actualizarValorCuotaStorage()
     }
 }
@@ -640,7 +629,7 @@ function costoCuota() {
         </div>
         `
         contenedorMostrarCuotas.append(cartel)
-        botonCerrar(cartel, "boton-cancelar", botonCostoCuota)
+        botonCerrarCartel(cartel, "boton-cancelar", botonCostoCuota)
         guardarCambioCostoCuota(cartel)
     } else {
         alert("Identifíquese antes de actualizar el costo actual de la cuota");
@@ -687,7 +676,7 @@ function listaDeudores() {
         <button type="button" class="btn btn-success m-4" id="boton-cerrar">Cerrar</button>
     `
     contenedorMostrarCuotas.append(cartel)
-    botonCerrar(cartel, "boton-cerrar", botonListaDeudores)
+    botonCerrarCartel(cartel, "boton-cerrar", botonListaDeudores)
     cargarListaDeudores()
     mostrarListaDeudores()
 }
@@ -713,7 +702,7 @@ function totalRecaudaciones() {
     </div>
     `
     contenedorMostrarCuotas.append(cartel)
-    botonCerrar(cartel, "boton-cerrar", botonTotalRecaudaciones)
+    botonCerrarCartel(cartel, "boton-cerrar", botonTotalRecaudaciones)
 }
 //section CUOTAS fin
 
