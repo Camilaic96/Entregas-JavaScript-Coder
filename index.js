@@ -1,4 +1,4 @@
-// Variables de información
+// Variables de informaciónlet
 let socios = [{
         nroSocio: 1,
         nombre: "CAM",
@@ -56,6 +56,8 @@ let socioACambiar = {}
 
 let formularioCambioCostoCuota
 
+let numero
+
 // Variables para elementos de autenticación y usuario
 let formularioIdentificacion;
 let contenedorIdentificacion;
@@ -81,7 +83,8 @@ let inputEdadCambio;
 let inputGeneroCambio;
 let inputCuotaPagaCambio;
 let contenedorSociosCambio;
-let contenedorDatosActuales;
+
+let contenedorBuscarSocioCambio;
 
 //variables botones
 let contenedorMostrarEstad
@@ -98,6 +101,13 @@ let botonListaDeudores
 let botonTotalRecaudaciones
 
 let graficaSociosPorGenero
+
+let formularioCambioNSocio
+let formularioCambioNombre
+let formularioCambioApellido
+let formularioCambioEdad
+let formularioCambioGenero
+let formularioCambioCuotaPaga
 
 class Socio {
     constructor(nroSocio, nombre, apellido, edad, genero, cuotaPaga) {
@@ -129,16 +139,19 @@ function inicializarElementos() {
     contenedorSocios = document.getElementById("contenedorSocios")
     contenedorFormIngreso = document.getElementById("contenedor-form-ingreso")
 
+    contenedorBuscarSocioCambio = document.getElementById("contenedor-buscar-socio-cambio")
+
     formularioCambio = document.getElementById("formulario-cambio")
-    inputNroSocioCambio = document.getElementById("inputNroSocio-cambio")
-    inputNombreCambio = document.getElementById("inputNombreSocio-cambio")
-    inputApellidoCambio = document.getElementById("inputApellidoSocio-cambio")
-    inputEdadCambio = document.getElementById("inputEdad-cambio")
-    inputGeneroCambio = document.getElementById("inputGenero-cambio")
+    inputNroSocioCambio = document.getElementById("inputNroSocioCambio")
+    inputNombreCambio = document.getElementById("inputNombreCambio")
+    inputApellidoCambio = document.getElementById("inputApellidoCambio")
+    inputEdadCambio = document.getElementById("inputEdadCambio")
+    inputGeneroCambioM = document.getElementById("inputGeneroCambioM")
+    inputGeneroCambioH = document.getElementById("inputGeneroCambioH")
+    inputGeneroCambioNB = document.getElementById("inputGeneroCambioNB")
     inputCuotaPagaCambio = document.getElementById("inputCuotaPaga-cambio")
     contenedorSociosCambio = document.getElementById("contenedorSocios-cambio")
     contenedorFormIngresoCambio = document.getElementById("contenedor-form-cambio")
-    contenedorDatosActuales = document.getElementById("contenedor-datos-actuales")
 
     contenedorMostrarEstad = document.getElementById("cont-mostrar-estadisticas")
     contenedorMostrarGestionSocios = document.getElementById("cont-mostrar-gestion-socios")
@@ -203,7 +216,7 @@ function mostrarFormularioIdentificacion() {
 
 function validarFormulario(event) {
     event.preventDefault();
-    let nroSocio = parseInt(inputNroSocio.value);
+    let nroSocio = parseInt(numero);
     let nombre = inputNombre.value;
     let apellido = inputApellido.value;
     let edad = parseInt(inputEdad.value);
@@ -244,52 +257,6 @@ function validarFormulario(event) {
     container.innerHTML = ""
 }
 
-function validarFormularioCambio(event) {
-    event.preventDefault();
-
-    let nroSocioCambio = parseInt(valid(socioACambiar.nroSocio, inputNroSocioCambio.value))
-    let nombreCambio = valid(socioACambiarnombre, inputNombreCambio.value)
-    let apellidoCambio = valid(socioACambiar.apellido, inputApellidoCambio.value)
-    let edadCambio = parseInt(valid(socioACambiar.edad, inputEdadCambio.value))
-    let generoCambio
-    let cuotaPagaCambio
-
-    if (document.getElementById("genero-m-cambio").checked) {
-        generoCambio = "F"
-    } else if (document.getElementById("genero-h-cambio").checked) {
-        generoCambio = "M"
-    } else if (document.getElementById("genero-nb-cambio").checked) {
-        generoCambio = "NB"
-    } else {
-        generoCambio = socioACambiar.genero
-    }
-    if (document.getElementById("cuotaPaga-cambio").checked) {
-        cuotaPagaCambio = true
-    } else if (document.getElementById("cuotaNoPaga-cambio").checked) {
-        cuotaPagaCambio = false
-    } else {
-        cuotaPagaCambio = socioACambiar.cuotaPaga
-    }
-
-    eliminarSocio(socioACambiar.nroSocio)
-
-    let socio = new Socio(
-        nroSocioCambio,
-        nombreCambio,
-        apellidoCambio,
-        edadCambio,
-        generoCambio,
-        cuotaPagaCambio
-    );
-
-    socios.push(socio);
-    formulario.reset();
-    actualizarSociosStorage()
-
-    let container = document.getElementById("formulario-cambio")
-    container.innerHTML = ""
-}
-
 function botonCerrar(elem, id, btn) {
     const botonCerrar = document.getElementById(id)
     botonCerrar.onclick = () => {
@@ -304,7 +271,6 @@ function buscarSocio(nro) {
         return elementoEncontrado
     } else {
         return -1
-        alert("No existe")
     }
 }
 
@@ -361,12 +327,11 @@ function buscarDatosSocio() {
                     <button type="button" class="btn btn-success" id="buscar-socio">Buscar</button>
                 </div>
             </form>
-            <button type="button" class="btn btn-success m-4" id="boton-cancelar">Cancelar</button>
+            <button type="button" class="btn btn-success m-4" id="boton-cancelar-buscar">Cancelar</button>
         </div>
         `
     contenedorMostrarGestionSocios.append(cartel)
-    botonCerrar(cartel, "boton-cancelar", botonBuscarDatosSocio)
-    formularioCambioCostoCuota = document.getElementById("formulario-buscar-socio")
+    botonCerrar(cartel, "boton-cancelar-buscar", botonBuscarDatosSocio)
     let botonBuscarSocio = document.getElementById("buscar-socio")
     botonBuscarSocio.onclick = () => {
         let nro = parseInt(inputBuscarSocio.value)
@@ -422,11 +387,11 @@ function elimSocio() {
                     <button type="button" class="btn btn-success" id="boton-eliminar-socio">Eliminar</button>
                 </div>
             </form>
-            <button type="button" class="btn btn-success m-4" id="boton-cancelar">Cancelar</button>
+            <button type="button" class="btn btn-success m-4" id="boton-cancelar-eliminar">Cancelar</button>
         </div>
         `
         contenedorMostrarGestionSocios.append(cartel)
-        botonCerrar(cartel, "boton-cancelar", botonEliminarSocio)
+        botonCerrar(cartel, "boton-cancelar-eliminar", botonEliminarSocio)
         formularioEliminarSocio = document.getElementById("formulario-eliminar-socio")
         let botonElimSocio = document.getElementById("boton-eliminar-socio")
         botonElimSocio.onclick = () => {
@@ -440,63 +405,132 @@ function elimSocio() {
     }
 }
 
+function crearTextoForm(dato) {
+    let textoNSocio = document.createElement("div")
+    textoNSocio.innerHTML = `<p class="card-text">Nº de socio: <b>${dato.nroSocio}</b></p>`
+    let contenedorTextoNSocio = document.getElementById("text-nSocio-cambiar")
+    contenedorTextoNSocio.append(textoNSocio)
+
+    let textoNombre = document.createElement("div")
+    textoNombre.innerHTML = `<p class="card-text">Nombre: <b>${dato.nombre}</b></p>`
+    let contenedorTextoNombre = document.getElementById("text-nombre-cambiar")
+    contenedorTextoNombre.append(textoNombre)
+
+    let textoApellido = document.createElement("div")
+    textoApellido.innerHTML = `<p class="card-text">Apellido: <b>${dato.apellido}</b></p>`
+    let contenedorTextoApellido = document.getElementById("text-apellido-cambiar")
+    contenedorTextoApellido.append(textoApellido)
+
+    let textoEdad = document.createElement("div")
+    textoEdad.innerHTML = `<p class="card-text">Edad: <b>${dato.edad}</b></p>`
+    let contenedorTextoEdad = document.getElementById("text-edad-cambiar")
+    contenedorTextoEdad.append(textoEdad)
+
+    let textoGenero = document.createElement("div")
+    textoGenero.innerHTML = `<p class="card-text">Género: <b>${dato.genero}</b></p>`
+    let contenedorTextoGenero = document.getElementById("text-genero-cambiar")
+    contenedorTextoGenero.append(textoGenero)
+
+
+    let textoCuotaPaga = document.createElement("div")
+    textoCuotaPaga.innerHTML = `<p class="card-text">¿Cuota paga?: <b>${dato.cuotaPaga}</b></p>`
+    let contenedorTextoCuotaPaga = document.getElementById("text-cuotaPaga-cambiar")
+    contenedorTextoCuotaPaga.append(textoCuotaPaga)
+}
+
+function cancelar(id, btn, contenedor) {
+    let botonCancelar = document.getElementById(id)
+    botonCancelar.onclick = () => {
+        btn.disabled = false
+        contenedor.hidden = true
+    }
+}
+
+function validarFormularioCambio(event) {
+    event.preventDefault();
+    let nroSocioCambio
+    let nombreCambio
+    let apellidoCambio
+    let edadCambio
+    let generoCambio
+    let cuotaPagaCambio
+
+    if(parseInt(inputNroSocioCambio.value) != NaN) {
+        nroSocioCambio = parseInt(inputNroSocioCambio.value)
+    } else {
+        nroSocioCambio = socioACambiar.nroSocio
+    }
+
+    if(inputNombreCambio.value != ""){
+        nombreCambio = inputNombreCambio.value
+    } else {
+        nombreCambio = socioACambiar.nombre
+    }
+
+    if(inputApellidoCambio.value != ""){
+        apellidoCambio = inputApellidoCambio.value
+    } else {
+        apellidoCambio = socioACambiar.apellido
+    }
+
+    if(parseInt(inputEdadCambio.value) != NaN){
+        edadCambio = parseInt(inputEdadCambio.value)
+    } else {
+        edadCambio = socioACambiar.edad
+    }
+
+    if (inputGeneroCambioM.checked) {
+        generoCambio = "F"
+    } else if (inputGeneroCambioH.checked) {
+        generoCambio = "M"
+    } else if (inputGeneroCambioNB.checked) {
+        generoCambio = "NB"
+    } else {
+        generoCambio = socioACambiar.genero
+    }
+
+    if (inputCuotaPagaCambioSi.checked) {
+        cuotaPagaCambio = true
+    } else if (inputCuotaPagaCambioNo.checked) {
+        cuotaPagaCambio = false
+    } else {
+        cuotaPagaCambio = socioACambiar.cuotaPaga
+    }
+
+    eliminarSocio(numero)
+    let socio = new Socio(
+        nroSocioCambio,
+        nombreCambio,
+        apellidoCambio,
+        edadCambio,
+        generoCambio,
+        cuotaPagaCambio
+    );
+    socios.push(socio);
+    formularioCambio.reset();
+    actualizarSociosStorage()
+    botonCambiarDatosSocio.disabled = false
+    contenedorFormIngresoCambio.hidden = true
+
+    cancelar("boton-cerrar-form-cambio", botonCambiarDatosSocio, contenedorFormIngresoCambio)
+}
+
 //CAMBIAR INFO DE SOCIO
 function cambiarDatosSocio() {
     if (usuario) {
         botonCambiarDatosSocio.disabled = true
-        let cartel = document.createElement("div")
-        cartel.innerHTML = `
-        <div class="border border-success w-50 p-3 mx-auto">
-            <p>Ingrese el número de socio</p>
-            <form id="formulario-buscar-socio" class="d-flex justify-content-center">
-                <div>
-                    <input type="text" class="form-control" id="inputBuscarSocio" placeholder="Nº socio" required />
-                </div>
-                <div>
-                    <button type="button" class="btn btn-success" id="buscar-socio">Buscar</button>
-                </div>
-            </form>
-            <button type="button" class="btn btn-success m-4" id="boton-cancelar">Cancelar</button>
-        </div>
-        `
-        contenedorMostrarGestionSocios.append(cartel)
-        botonCerrar(cartel, "boton-cancelar", botonCambiarDatosSocio)
+        contenedorBuscarSocioCambio.hidden = false
+        
+        cancelar("boton-cancelar-cambiar", botonCambiarDatosSocio, contenedorBuscarSocioCambio)
 
         let botonCamb = document.getElementById("buscar-socio")
         botonCamb.onclick = () => {
-            let nro = parseInt(inputBuscarSocio.value)
-            socioACambiar = buscarSocio(nro)
-            inicializarElementos()
-            inicializarEventos()
+            numero = parseInt(inputBuscarSocio.value)
+            socioACambiar = buscarSocio(numero)
+            crearTextoForm(socioACambiar)
+            contenedorBuscarSocioCambio.hidden = true
             contenedorFormIngresoCambio.hidden = false
-            cartel.innerHTML = `
-                    <div class="card">
-                        <div class="card-body">
-                            <p class="card-text">Nº de socio: <b>${socioACambiar.nroSocio}</b></p>
-                            <p class="card-text">Nombre: <b>${socioACambiar.nombre}</b></p>
-                            <p class="card-text">Apellido: <b>${socioACambiar.apellido}</b></p>
-                            <p class="card-text">Edad: <b>${socioACambiar.edad}</b></p>
-                            <p class="card-text">Género: <b>${socioACambiar.genero}</b></p>
-                            <p class="card-text">¿Cuota paga?: <b>${socioACambiar.cuotaPaga}</b></p>
-                        </div>
-                    </div>
-            `
-            contenedorDatosActuales.append(cartel)
-
-            let botonCerrarDos = document.getElementById("boton-cerrar-form-cambio")
-            botonCerrarDos.onclick = () => {
-                cartel.remove()
-                contenedorFormIngresoCambio.hidden = true
-                botonCambiarDatosSocio.disabled = false
-            }
-            let botonRegistrarSocioCambio = document.getElementById("boton-registrar-cambio")
-            botonRegistrarSocioCambio.onclick = () => {
-                botonCambiarDatosSocio.disabled = false
-                contenedorFormIngresoCambio.hidden = true
-                alert("socio registrado")
-            }
         }
-
     } else {
         alert("Identifíquese antes de cambiar datos de un socio");
     }

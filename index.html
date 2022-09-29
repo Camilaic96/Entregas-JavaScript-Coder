@@ -172,66 +172,78 @@
                             <button type="button" class="btn btn-success m-4" id="boton-cerrar-form">Cerrar</button>
                         </form>
                     </div>
-                    <div class="row" id="contenedor-form-cambio" hidden>
-                        <div class="col-6">
-                            <h4>Datos actuales del socio</h4>
-                            <div id="contenedor-datos-actuales"></div>
-                        </div>
-                        <div class="col-6">
-                            <h4>Nuevos datos a cargar</h4>
-                            <form id="formulario-cambio">
-                                <div class="mb-3">
-                                    <label class="form-label">Nº de socio</label>
-                                    <input type="text" class="form-control" id="inputNroSocioCambio" placeholder="nº de Socio" />
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Nombre</label>
-                                    <input type="text" class="form-control" id="inputNombreSocioCambio" placeholder="Nombre" />
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Apellido</label>
-                                    <input type="text" class="form-control" id="inputApellidoSocioCambio" placeholder="Apellido" />
-                                </div>
-
-                                <div class="mb-3">
-                                    <label class="form-label">Edad</label>
-                                    <input type="number" class="form-control" id="inputEdadCambio" placeholder="Edad" />
-                                </div>
-
-                                <div>
-                                    <label class="form-label">Género</label>
-                                </div>
-                                <div class="form-check-inline">
-                                    <input class="form-check-input" type="radio" name="genero" id="genero-m-cambio" value="option1">
-                                    <label class="form-check-label" for="exampleRadios1">Mujer</label>
-                                </div>
-                                <div class="form-check-inline">
-                                    <input class="form-check-input" type="radio" name="genero" id="genero-h-cambio" value="option2">
-                                    <label class="form-check-label" for="exampleRadios1">Hombre</label>
-                                </div>
-                                <div class="form-check-inline mb-3">
-                                    <input class="form-check-input" type="radio" name="genero" id="genero-nb-cambio" value="option3">
-                                    <label class="form-check-label" for="exampleRadios2">No binarie</label>
-                                </div>
-
-                                <div>
-                                    <label class="form-label">¿Pagó cuota?</label>
-                                </div>
-                                <div class="form-check-inline">
-                                    <input class="form-check-input" type="radio" name="exampleRadios" id="cuotaPaga-cambio" value="option1">
-                                    <label class="form-check-label" for="exampleRadios1">Sí</label>
-                                </div>
-                                <div class="form-check-inline mb-3">
-                                    <input class="form-check-input" type="radio" name="exampleRadios" id="cuotaNoPaga-cambio" value="option2">
-                                    <label class="form-check-label" for="exampleRadios2">No</label>
-                                </div>
-
-                                <div class="mb-3">
-                                    <button type="submit" class="btn btn-success" id="boton-registrar-cambio">Registrar</button>
-                                </div>
-                            </form>
-                        </div>
-                        <button type="button" class="btn btn-success m-4" id="boton-cerrar-form-cambio">Cerrar</button>
+                    <div id="contenedor-buscar-socio-cambio" class="border border-success w-50 p-3 mx-auto" hidden>
+                        <p>Ingrese el número de socio</p>
+                        <form id="formulario-buscar-socio" class="d-flex justify-content-center">
+                            <div>
+                                <input type="text" class="form-control" id="inputBuscarSocio" placeholder="Nº socio"
+                                    required />
+                            </div>
+                            <div>
+                                <button type="button" class="btn btn-success" id="buscar-socio">Buscar</button>
+                            </div>
+                        </form>
+                        <button type="button" class="btn btn-success m-4" id="boton-cancelar-cambiar">Cancelar</button>
+                    </div>
+                    <div id="contenedor-form-cambio" hidden>
+                        <form id="formulario-cambio" class="justify-content-center">
+                            <div id="text-nSocio-cambiar">
+                            </div>
+                            <div>
+                                <input type="number" class="form-control" id="inputNroSocioCambio"
+                                    placeholder="Nuevo nº socio" />
+                            </div>
+                            <div id="text-nombre-cambiar">
+                            </div>
+                            <div>
+                                <input type="text" class="form-control" id="inputNombreCambio"
+                                    placeholder="Nuevo nombre socio" />
+                            </div>
+                            <div id="text-apellido-cambiar">
+                            </div>
+                            <div>
+                                <input type="text" class="form-control" id="inputApellidoCambio"
+                                    placeholder="Nuevo apellido socio" />
+                            </div>
+                            <div id="text-edad-cambiar">
+                            </div>
+                            <div>
+                                <input type="number" class="form-control" id="inputEdadCambio"
+                                    placeholder="Nueva edad socio" />
+                            </div>
+                            <div id="text-genero-cambiar">
+                            </div>
+                            <div class="form-check-inline">
+                                <input class="form-check-input" type="radio" name="genero" id="inputGeneroCambioM"
+                                    value="option1">
+                                <label class="form-check-label" for="exampleRadios1">Mujer</label>
+                            </div>
+                            <div class="form-check-inline">
+                                <input class="form-check-input" type="radio" name="genero" id="inputGeneroCambioH"
+                                    value="option2">
+                                <label class="form-check-label" for="exampleRadios1">Hombre</label>
+                            </div>
+                            <div class="form-check-inline mb-3">
+                                <input class="form-check-input" type="radio" name="genero" id="inputGeneroCambioNB"
+                                    value="option3">
+                                <label class="form-check-label" for="exampleRadios2">No binarie</label>
+                            </div>
+                            <div id="text-cuotaPaga-cambiar">
+                            </div>
+                            <div class="form-check-inline">
+                                <input class="form-check-input" type="radio" name="exampleRadios"
+                                    id="inputCuotaPagaCambioSi" value="option1">
+                                <label class="form-check-label" for="exampleRadios1">Sí</label>
+                            </div>
+                            <div class="form-check-inline mb-3">
+                                <input class="form-check-input" type="radio" name="exampleRadios"
+                                    id="inputCuotaPagaCambioNo" value="option2">
+                                <label class="form-check-label" for="exampleRadios2">No</label>
+                            </div>
+                            <button type="submit" class="btn btn-success" id="boton-registrar-cambio">Finalizar</button>
+                            <button type="button" class="btn btn-success m-4"
+                                id="boton-cerrar-form-cambio">Cerrar</button>
+                        </form>
                     </div>
                 </div>
             </div>
