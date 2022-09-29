@@ -216,7 +216,7 @@ function mostrarFormularioIdentificacion() {
 
 function validarFormulario(event) {
     event.preventDefault();
-    let nroSocio = parseInt(numero);
+    let nroSocio = parseInt(inputNroSocio.value);
     let nombre = inputNombre.value;
     let apellido = inputApellido.value;
     let edad = parseInt(inputEdad.value);
@@ -343,8 +343,6 @@ function buscarDatosSocio() {
 //AGREGAR NUEVO SOCIO
 function agregarSocio() {
     if (usuario) {
-        inicializarElementos()
-        inicializarEventos()
         botonAgregarSocio.disabled = true
         contenedorFormIngreso.hidden = false;
         let botonCerrar = document.getElementById("boton-cerrar-form")
@@ -507,7 +505,7 @@ function validarFormularioCambio(event) {
         cuotaPagaCambio
     );
     socios.push(socio);
-    formularioCambio.reset();
+    formularioCambio.reset()
     actualizarSociosStorage()
     botonCambiarDatosSocio.disabled = false
     contenedorFormIngresoCambio.hidden = true
