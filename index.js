@@ -173,6 +173,18 @@ function inicializarEventos() {
     botonLimpiarStorage.onclick = eliminarStorage
 }
 
+function botonesDesactivados(value) {
+    botonBuscarDatosSocio.disabled = value
+    botonAgregarSocio.disabled = value
+    botonEliminarSocio.disabled = value
+    botonCambiarDatosSocio.disabled = value
+    botonSociosPorGenero.disabled = value
+    botonPromedioEdades.disabled = value
+    botonCostoCuota.disabled = value
+    botonListaDeudores.disabled = value
+    botonTotalRecaudaciones.disabled = value
+}
+
 //USUARIO
 function identificarUsuario(event) {
     event.preventDefault();
@@ -194,12 +206,12 @@ function mostrarFormularioIdentificacion() {
 
 //section GESTION SOCIOS
 function buscarSocio(nro) {
-    let elementoEncontrado = socios.find((socio) => socio?.nroSocio == nro)
+    let elementoEncontrado = socios.find((socio) => socio?.nroSocio === nro)
     return elementoEncontrado !== undefined ? elementoEncontrado : -1
 }
 function mostrarSocio(elementoEncontrado, mensaje) {
     let cartel = document.createElement("div")
-    if (elementoEncontrado != -1) {
+    if (elementoEncontrado !== -1) {
         cartel.innerHTML = `
         <div class="card">
             <div class="card-body">
@@ -224,7 +236,7 @@ function mostrarSocio(elementoEncontrado, mensaje) {
     return cartel
 }
 function buscarDatosSocio() {
-    botonBuscarDatosSocio.disabled = true
+    botonesDesactivados(true)
     let cartel = document.createElement("div")
     cartel.innerHTML = `
         <div class="border border-success w-50 p-3 mx-auto">
@@ -241,12 +253,12 @@ function buscarDatosSocio() {
         </div>
         `
     contenedorMostrarGestionSocios.append(cartel)
-    botonCerrarCartel(cartel, "boton-cancelar", botonBuscarDatosSocio)
+    botonCerrarCartel(cartel, "boton-cancelar")
     let botonBuscarSocio = document.getElementById("buscar-dato-socio")
     botonBuscarSocio.onclick = () => {
         let nro = parseInt(inputBuscarSocio.value)
         cartel.innerHTML = ''
-        botonCerrarCartel(mostrarSocio(buscarSocio(nro, socios), "Cerrar"), "boton-cerrar", botonBuscarDatosSocio)
+        botonCerrarCartel(mostrarSocio(buscarSocio(nro), "Cerrar"), "boton-cerrar")
     }
 }
 function validarFormulario(event) {
@@ -291,24 +303,24 @@ function validarFormulario(event) {
 }
 function agregarSocio() {
     if (usuario) {
-        botonAgregarSocio.disabled = true
+        botonesDesactivados(true)
         contenedorFormIngreso.hidden = false 
-        cerrar("boton-cerrar-form", botonAgregarSocio, contenedorFormIngreso)
-        cerrar("boton-registrar", botonAgregarSocio, contenedorFormIngreso)
+        cerrar("boton-cerrar-form", contenedorFormIngreso)
+        cerrar("boton-registrar", contenedorFormIngreso)
     } else {
         alert("Identifíquese antes de registrar un nuevo socio");
     }
 }
 function eliminarSocio(nroSocio) {
     let indiceBorrar = socios.findIndex((socio) => Number(socio?.nroSocio) === Number(nroSocio));
-    if (indiceBorrar != -1) {
+    if (indiceBorrar !== -1) {
         socios.splice(indiceBorrar, 1)
         actualizarSociosStorage()
     }
 }
 function elimSocio() {
     if (usuario) {
-        botonEliminarSocio.disabled = true
+        botonesDesactivados(true)
         let cartel = document.createElement("div")
         cartel.innerHTML = `
         <div class="border border-success w-50 p-3 mx-auto">
@@ -325,13 +337,13 @@ function elimSocio() {
         </div>
         `
         contenedorMostrarGestionSocios.append(cartel)
-        botonCerrarCartel(cartel, "boton-cancelar-eliminar", botonEliminarSocio)
+        botonCerrarCartel(cartel, "boton-cancelar-eliminar")
         formularioEliminarSocio = document.getElementById("formulario-eliminar-socio")
         let botonElimSocio = document.getElementById("boton-eliminar-socio")
         botonElimSocio.onclick = () => {
             let nro = parseInt(inputEliminarSocio.value)
             cartel.innerHTML = ''
-            botonCerrarCartel(mostrarSocio(buscarSocio(nro, socios), "Eliminar"), "boton-cerrar", botonEliminarSocio)
+            botonCerrarCartel(mostrarSocio(buscarSocio(nro), "Eliminar"), "boton-cerrar")
             eliminarSocio(nro)
         }
     } else {
@@ -413,10 +425,10 @@ function crearTextoForm(dato) {
 }
 function cambiarDatosSocio() {
     if (usuario) {
-        botonCambiarDatosSocio.disabled = true
+        botonesDesactivados(true)
         contenedorBuscarSocioCambio.hidden = false
         
-        cerrar("boton-cancelar-cambiar", botonCambiarDatosSocio, contenedorBuscarSocioCambio)
+        cerrar("boton-cancelar-cambiar", contenedorBuscarSocioCambio)
 
         let botonCamb = document.getElementById("buscar-socio")
         botonCamb.onclick = () => {
@@ -426,7 +438,7 @@ function cambiarDatosSocio() {
             contenedorBuscarSocioCambio.hidden = true
             contenedorFormIngresoCambio.hidden = false
         }
-        cerrar("boton-cerrar-form-cambio", botonCambiarDatosSocio, contenedorFormIngresoCambio)
+        cerrar("boton-cerrar-form-cambio", contenedorFormIngresoCambio)
     } else {
         alert("Identifíquese antes de cambiar datos de un socio");
     }
@@ -439,7 +451,7 @@ contar = (letra) => {
     return dato
 }
 function sociosPorGenero() {
-    botonSociosPorGenero.disabled = true
+    botonesDesactivados(true)
     mostrarGrafica(false, contar("F"), contar("M"), contar("NB"))
     let cartel = document.createElement("div")
     cartel.innerHTML = `
@@ -453,11 +465,11 @@ function sociosPorGenero() {
     botonCerrarC.onclick = () => {
         mostrarGrafica(true, contar("F"), contar("M"), contar("NB"))
         cartel.remove()
-        botonSociosPorGenero.disabled = false
+        botonesDesactivados(false)
     }
 }
 function promedioEdades() {
-    botonPromedioEdades.disabled = true
+    botonesDesactivados(true)
     let totalEdades = 0
     for (const socio of socios) {totalEdades += socio?.edad}
     let cartel = document.createElement("div")
@@ -467,7 +479,7 @@ function promedioEdades() {
     `
     contenedorMostrarEstad.append(cartel)
 
-    botonCerrarCartel(cartel, "boton-cerrar", botonPromedioEdades)
+    botonCerrarCartel(cartel, "boton-cerrar")
 }
 
 //section CUOTAS
@@ -479,12 +491,13 @@ function guardarCambioCostoCuota(cartel) {
             <p>El nuevo valor de la cuota es $${valorCuota}</p>
             <button type="button" class="btn btn-success m-4" id="boton-cerrar">Cerrar</button>
             `
-        botonCerrarCartel(cartel, "boton-cerrar", botonCostoCuota)
+        botonCerrarCartel(cartel, "boton-cerrar")
         actualizarValorCuotaStorage()
     }
 }
 function costoCuota() {
     if (usuario) {
+        botonesDesactivados(true)
         formularioCambioCostoCuota = document.getElementById("formulario-costo-cuota")
         let cartel = document.createElement("div")
         cartel.innerHTML = `
@@ -502,7 +515,7 @@ function costoCuota() {
         </div>
         `
         contenedorMostrarCuotas.append(cartel)
-        botonCerrarCartel(cartel, "boton-cancelar", botonCostoCuota)
+        botonCerrarCartel(cartel, "boton-cancelar")
         guardarCambioCostoCuota(cartel)
     } else {
         alert("Identifíquese antes de actualizar el costo actual de la cuota");
@@ -533,7 +546,7 @@ function mostrarListaDeudores() {
     })
 }
 function listaDeudores() {
-    botonListaDeudores.disabled = true
+    botonesDesactivados(true)
     let cartel = document.createElement("div")
     cartel.innerHTML = `
         <h3>Lista de deudores</h3>
@@ -541,7 +554,7 @@ function listaDeudores() {
         <button type="button" class="btn btn-success m-4" id="boton-cerrar">Cerrar</button>
     `
     contenedorMostrarCuotas.append(cartel)
-    botonCerrarCartel(cartel, "boton-cerrar", botonListaDeudores)
+    botonCerrarCartel(cartel, "boton-cerrar")
     cargarListaDeudores()
     mostrarListaDeudores()
 }
@@ -551,7 +564,7 @@ calcularRecaudacion = () => {
     return totalRecaud
 }
 function totalRecaudaciones() {
-    botonTotalRecaudaciones.disabled = true
+    botonesDesactivados(true)
     let cartel = document.createElement("div")
     cartel.innerHTML = `
     <div class="border border-success w-50 p-3 mx-auto">
@@ -560,7 +573,7 @@ function totalRecaudaciones() {
     </div>
     `
     contenedorMostrarCuotas.append(cartel)
-    botonCerrarCartel(cartel, "boton-cerrar", botonTotalRecaudaciones)
+    botonCerrarCartel(cartel, "boton-cerrar")
 }
 
 //STORAGE

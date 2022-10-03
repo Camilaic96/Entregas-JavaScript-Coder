@@ -1,15 +1,15 @@
-function botonCerrarCartel(elem, id, btn) {
+function botonCerrarCartel(elem, id) {
     const botonCerrar = document.getElementById(id)
     botonCerrar.onclick = () => {
         elem.remove()
-        btn.disabled = false
+        botonesDesactivados(false)
     }
 }
 
-function cerrar(id, boton, contenedor) {
+function cerrar(id, contenedor) {
     const botonCerrar = document.getElementById(id)
     botonCerrar.onclick = () => {
-        boton.disabled = false
+        botonesDesactivados(false)
         contenedor.hidden = true
     }
 }
