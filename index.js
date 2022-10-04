@@ -56,6 +56,8 @@ let socioACambiar
 
 let formularioCambioCostoCuota
 
+let formularioBuscarSocio
+
 let numero
 
 // Variables para elementos de autenticación y usuario
@@ -157,6 +159,7 @@ function inicializarElementos() {
     botonTotalRecaudaciones = document.getElementById("total-recaudaciones")
     botonRegistrarSocio = document.getElementById("boton-registrar")
 }
+
 function inicializarEventos() {
     formulario.onsubmit = (event) => validarFormulario(event)
     formularioCambio.onsubmit = (event) => validarFormularioCambio(event)
@@ -185,6 +188,16 @@ function botonesDesactivados(value) {
     botonTotalRecaudaciones.disabled = value
 }
 
+function mostrarMensajeConfirmacion(mensaje) {
+    Toastify({
+        text: mensaje,
+        duration: 3000,
+        close: true,
+        gavity: "top",
+        position: "right",
+    }).showToast();
+}
+
 //USUARIO
 function identificarUsuario(event) {
     event.preventDefault();
@@ -193,11 +206,13 @@ function identificarUsuario(event) {
     actualizarUsuarioStorage();
     mostrarTextoUsuario();
 }
+
 function mostrarTextoUsuario() {
     contenedorIdentificacion.hidden = true;
     contenedorUsuario.hidden = false;
     textoUsuario.innerHTML += ` ${usuario}`;
 }
+
 function mostrarFormularioIdentificacion() {
     contenedorIdentificacion.hidden = false;
     contenedorUsuario.hidden = true;
@@ -209,32 +224,7 @@ function buscarSocio(nro) {
     let elementoEncontrado = socios.find((socio) => socio?.nroSocio === nro)
     return elementoEncontrado !== undefined ? elementoEncontrado : -1
 }
-function mostrarSocio(elementoEncontrado, mensaje) {
-    let cartel = document.createElement("div")
-    if (elementoEncontrado !== -1) {
-        cartel.innerHTML = `
-        <div class="card">
-            <div class="card-body">
-                <p class="card-text">Nº de socio: <b>${elementoEncontrado.nroSocio}</b></p>
-                <p class="card-text">Nombre: <b>${elementoEncontrado.nombre}</b></p>
-                <p class="card-text">Apellido: <b>${elementoEncontrado.apellido}</b></p>
-                <p class="card-text">Edad: <b>${elementoEncontrado.edad}</b></p>
-                <p class="card-text">Género: <b>${elementoEncontrado.genero}</b></p>
-                <p class="card-text">¿Cuota paga?: <b>${elementoEncontrado.cuotaPaga}</b></p>
-            </div>
-        </div>
-        <button type="button" class="btn btn-success m-4" id="boton-cerrar">${mensaje}</button>
-        `
-        contenedorMostrarGestionSocios.append(cartel)
-    } else {
-        cartel.innerHTML = `
-            <p>No existe</p>
-            <button type="button" class="btn btn-success m-4" id="boton-cerrar">Cerrar</button>
-            `
-        contenedorMostrarGestionSocios.append(cartel)
-    }
-    return cartel
-}
+
 function buscarDatosSocio() {
     botonesDesactivados(true)
     let cartel = document.createElement("div")
@@ -254,13 +244,21 @@ function buscarDatosSocio() {
         `
     contenedorMostrarGestionSocios.append(cartel)
     botonCerrarCartel(cartel, "boton-cancelar")
+    
     let botonBuscarSocio = document.getElementById("buscar-dato-socio")
     botonBuscarSocio.onclick = () => {
         let nro = parseInt(inputBuscarSocio.value)
-        cartel.innerHTML = ''
-        botonCerrarCartel(mostrarSocio(buscarSocio(nro), "Cerrar"), "boton-cerrar")
+        if (buscarSocio(nro) !== -1) {
+            mostrarSocioSA(buscarSocio(nro), 'Socio encontrado')
+        } else {
+            mensajeError('No existe el socio')
+        }
+        inputBuscarSocio.value = ''
+        cartel.remove()
+        botonesDesactivados(false)
     }
 }
+
 function validarFormulario(event) {
     event.preventDefault();
     let nroSocio = parseInt(inputNroSocio.value);
@@ -296,21 +294,25 @@ function validarFormulario(event) {
 
         socios.push(socio);
         formulario.reset();
+        mostrarMensajeConfirmacion("Socio registrado exitosamente")
         actualizarSociosStorage()
     } else {
-        alert("El id ya existe");
+        formulario.reset()
+        mensajeError('El id ya existe')
     }
 }
+
 function agregarSocio() {
     if (usuario) {
         botonesDesactivados(true)
-        contenedorFormIngreso.hidden = false 
+        contenedorFormIngreso.hidden = false
         cerrar("boton-cerrar-form", contenedorFormIngreso)
-        cerrar("boton-registrar", contenedorFormIngreso)
+        formulario.reset()
     } else {
-        alert("Identifíquese antes de registrar un nuevo socio");
+        mensajeError('Identifíquese antes de registrar un nuevo socio')
     }
 }
+
 function eliminarSocio(nroSocio) {
     let indiceBorrar = socios.findIndex((socio) => Number(socio?.nroSocio) === Number(nroSocio));
     if (indiceBorrar !== -1) {
@@ -318,6 +320,7 @@ function eliminarSocio(nroSocio) {
         actualizarSociosStorage()
     }
 }
+
 function elimSocio() {
     if (usuario) {
         botonesDesactivados(true)
@@ -342,14 +345,21 @@ function elimSocio() {
         let botonElimSocio = document.getElementById("boton-eliminar-socio")
         botonElimSocio.onclick = () => {
             let nro = parseInt(inputEliminarSocio.value)
-            cartel.innerHTML = ''
-            botonCerrarCartel(mostrarSocio(buscarSocio(nro), "Eliminar"), "boton-cerrar")
-            eliminarSocio(nro)
+            if (buscarSocio(nro) !== -1) {
+                confirmarEliminacion(buscarSocio(nro))
+            } else {
+                mensajeError('No existe el socio')
+            }
+            formularioEliminarSocio.reset()
+            cartel.remove()
+            botonesDesactivados(false)
         }
+
     } else {
-        alert("Identifíquese antes de eliminar un socio");
+        mensajeError('Identifíquese antes de eliminar un socio')
     }
 }
+
 function validarFormularioCambio(event) {
     event.preventDefault();
     let nroSocioCambio = parseInt(inputNroSocioCambio.value) || socioACambiar.nroSocio
@@ -377,21 +387,26 @@ function validarFormularioCambio(event) {
         cuotaPagaCambio = socioACambiar.cuotaPaga
     }
 
-    eliminarSocio(numero)
-    let socio = new Socio(
-        nroSocioCambio,
-        nombreCambio,
-        apellidoCambio,
-        edadCambio,
-        generoCambio,
-        cuotaPagaCambio
-    );
-    socios.push(socio);
-    formularioCambio.reset()
-    actualizarSociosStorage()
-    botonCambiarDatosSocio.disabled = false
-    contenedorFormIngresoCambio.hidden = true
+    const idExiste = socios.some((socio) => socio?.nroSocio === numero);
+    if (idExiste) {
+        eliminarSocio(numero)
+        let socio = new Socio(
+            nroSocioCambio,
+            nombreCambio,
+            apellidoCambio,
+            edadCambio,
+            generoCambio,
+            cuotaPagaCambio
+        );
+        socios.push(socio);
+        formularioCambio.reset()
+        actualizarSociosStorage()
+        botonCambiarDatosSocio.disabled = false
+        contenedorFormIngresoCambio.hidden = true
+        mostrarSocioSA(socio, 'Nuevos datos')
+    }
 }
+
 function crearTextoForm(dato) {
     let textoNSocio = document.createElement("div")
     textoNSocio.innerHTML = `<p class="card-text">Nº de socio: <b>${dato.nroSocio}</b></p>`
@@ -423,33 +438,44 @@ function crearTextoForm(dato) {
     let contenedorTextoCuotaPaga = document.getElementById("text-cuotaPaga-cambiar")
     contenedorTextoCuotaPaga.replaceChild(textoCuotaPaga, contenedorTextoCuotaPaga.childNodes[0])
 }
+
 function cambiarDatosSocio() {
     if (usuario) {
         botonesDesactivados(true)
+        formularioCambio = document.getElementById("formulario-cambio")
         contenedorBuscarSocioCambio.hidden = false
-        
         cerrar("boton-cancelar-cambiar", contenedorBuscarSocioCambio)
-
         let botonCamb = document.getElementById("buscar-socio")
         botonCamb.onclick = () => {
             numero = parseInt(inputBuscarSocioCambio.value)
-            socioACambiar = {... buscarSocio(numero)}
-            crearTextoForm(socioACambiar)
-            contenedorBuscarSocioCambio.hidden = true
-            contenedorFormIngresoCambio.hidden = false
+            if(buscarSocio(numero) !== -1){
+                socioACambiar = {...buscarSocio(numero)}
+                crearTextoForm(socioACambiar)
+                contenedorBuscarSocioCambio.hidden = true
+                contenedorFormIngresoCambio.hidden = false
+            }  else {
+                contenedorBuscarSocioCambio.hidden = true
+                contenedorFormIngresoCambio.hidden = true
+                mensajeError('No existe el socio')
+            }
+            inputBuscarSocioCambio.value = ''
+            botonesDesactivados(false)
         }
         cerrar("boton-cerrar-form-cambio", contenedorFormIngresoCambio)
     } else {
-        alert("Identifíquese antes de cambiar datos de un socio");
+        mensajeError('Identifíquese antes de cambiar datos de un socio')
     }
 }
 
 //section ESTADISTICAS
 contar = (letra) => {
     dato = 0
-    for (const socio of socios) { socio?.genero === letra && dato++ }
+    for (const socio of socios) {
+        socio?.genero === letra && dato++
+    }
     return dato
 }
+
 function sociosPorGenero() {
     botonesDesactivados(true)
     mostrarGrafica(false, contar("F"), contar("M"), contar("NB"))
@@ -468,10 +494,13 @@ function sociosPorGenero() {
         botonesDesactivados(false)
     }
 }
+
 function promedioEdades() {
     botonesDesactivados(true)
     let totalEdades = 0
-    for (const socio of socios) {totalEdades += socio?.edad}
+    for (const socio of socios) {
+        totalEdades += socio?.edad
+    }
     let cartel = document.createElement("div")
     cartel.innerHTML = `
         <p>El promedio de edades de los socios es de ${parseInt(totalEdades / socios.length)} años</p>
@@ -483,18 +512,6 @@ function promedioEdades() {
 }
 
 //section CUOTAS
-function guardarCambioCostoCuota(cartel) {
-    let botonGuardarCostoCuota = document.getElementById("guardar-costo-cuota")
-    botonGuardarCostoCuota.onclick = () => {
-        valorCuota = parseInt(inputCostoCuota.value)
-        cartel.innerHTML = `
-            <p>El nuevo valor de la cuota es $${valorCuota}</p>
-            <button type="button" class="btn btn-success m-4" id="boton-cerrar">Cerrar</button>
-            `
-        botonCerrarCartel(cartel, "boton-cerrar")
-        actualizarValorCuotaStorage()
-    }
-}
 function costoCuota() {
     if (usuario) {
         botonesDesactivados(true)
@@ -516,15 +533,26 @@ function costoCuota() {
         `
         contenedorMostrarCuotas.append(cartel)
         botonCerrarCartel(cartel, "boton-cancelar")
-        guardarCambioCostoCuota(cartel)
+        let botonGuardarCostoCuota = document.getElementById("guardar-costo-cuota")
+        botonGuardarCostoCuota.onclick = () => {
+            valorCuota = parseInt(inputCostoCuota.value)
+            confirmarCambioCostoCuota()
+            cartel.remove()
+            botonesDesactivados(false)
+            actualizarValorCuotaStorage()
+        }
     } else {
-        alert("Identifíquese antes de actualizar el costo actual de la cuota");
+        mensajeError('Identifíquese antes de actualizar el costo actual de la cuota')
     }
 }
+
 function cargarListaDeudores() {
     sociosDeudores.splice(0, sociosDeudores.length)
-    for (const socio of socios) { socio?.cuotaPaga === false && sociosDeudores.push(socio)}
+    for (const socio of socios) {
+        socio?.cuotaPaga === false && sociosDeudores.push(socio)
+    }
 }
+
 function mostrarListaDeudores() {
     const deudores = document.getElementById("mostrar-deudores")
     sociosDeudores.forEach((elemento) => {
@@ -545,6 +573,7 @@ function mostrarListaDeudores() {
         deudores.append(column)
     })
 }
+
 function listaDeudores() {
     botonesDesactivados(true)
     let cartel = document.createElement("div")
@@ -560,9 +589,12 @@ function listaDeudores() {
 }
 calcularRecaudacion = () => {
     let totalRecaud = 0
-    for (const socio of socios){socio.cuotaPaga === true && (totalRecaud += valorCuota)}
+    for (const socio of socios) {
+        socio.cuotaPaga === true && (totalRecaud += valorCuota)
+    }
     return totalRecaud
 }
+
 function totalRecaudaciones() {
     botonesDesactivados(true)
     let cartel = document.createElement("div")
@@ -583,23 +615,29 @@ function eliminarStorage() {
     socios = []
     mostrarFormularioIdentificacion()
     contenedorSocios.innerHTML = ""
+    location. reload()
 }
+
 function actualizarSociosStorage() {
     let sociosJSON = JSON.stringify(socios);
     localStorage.setItem("socios", sociosJSON);
 }
+
 function actualizarUsuarioStorage() {
     localStorage.setItem("usuario", usuario);
 }
+
 function actualizarValorCuotaStorage() {
     localStorage.setItem("valorCuota", valorCuota);
 }
+
 function obtenerSociosStorage() {
     let sociosJSON = localStorage.getItem("socios");
     if (sociosJSON) {
         socios = JSON.parse(sociosJSON);
     }
 }
+
 function obtenerUsuarioStorage() {
     let usuarioAlmacenado = localStorage.getItem("usuario");
     if (usuarioAlmacenado) {
@@ -607,6 +645,7 @@ function obtenerUsuarioStorage() {
         mostrarTextoUsuario();
     }
 }
+
 function obtenerValorCuotaStorage() {
     let valorCuotaAlmacenado = localStorage.getItem("valorCuota");
     if (valorCuotaAlmacenado) {
