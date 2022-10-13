@@ -1,53 +1,5 @@
 // Variables de informaciónlet
-let socios = [{
-        nroSocio: 1,
-        nombre: "CAM",
-        apellido: "CUE",
-        edad: 28,
-        genero: "F",
-        cuotaPaga: false
-    },
-    {
-        nroSocio: 2,
-        nombre: "FAT",
-        apellido: "CUE",
-        edad: 2,
-        genero: "F",
-        cuotaPaga: false
-    },
-    {
-        nroSocio: 3,
-        nombre: "FAC",
-        apellido: "CUE",
-        edad: 22,
-        genero: "M",
-        cuotaPaga: true
-    },
-    {
-        nroSocio: 4,
-        nombre: "TUC",
-        apellido: "CUE",
-        edad: 25,
-        genero: "NB",
-        cuotaPaga: true
-    },
-    {
-        nroSocio: 5,
-        nombre: "CAM",
-        apellido: "CUE",
-        edad: 12,
-        genero: "F",
-        cuotaPaga: false
-    },
-    {
-        nroSocio: 6,
-        nombre: "FAT",
-        apellido: "CUE",
-        edad: 2,
-        genero: "F",
-        cuotaPaga: false
-    },
-];
+let socios = [];
 let sociosDeudores = []
 let usuario
 let valorCuota = 1000
@@ -63,6 +15,7 @@ let numero
 // Variables para elementos de autenticación y usuario
 let formularioIdentificacion;
 let contenedorIdentificacion;
+let inputUsuario
 let contenedorUsuario;
 let textoUsuario;
 let botonLimpiarStorage
@@ -76,6 +29,7 @@ let inputEdad;
 let inputGenero;
 let inputCuotaPaga;
 let contenedorSocios;
+let contenedorFormIngreso;
 
 // Variables para formulario de socios
 let formularioCambio;
@@ -83,14 +37,18 @@ let inputNroSocioCambio;
 let inputNombreCambio;
 let inputApellidoCambio;
 let inputEdadCambio;
-let inputGeneroCambio;
+let inputGeneroCambioM;
+let inputGeneroCambioH;
+let inputGeneroCambioNB;
 let inputCuotaPagaCambio;
 let contenedorBuscarSocioCambio;
+let contenedorFormIngresoCambio;
 
-//variables botones
 let contenedorMostrarEstad
 let contenedorMostrarGestionSocios
 let contenedorMostrarCuotas
+
+//variables botones
 let botonBuscarDatosSocio
 let botonAgregarSocio
 let botonEliminarSocio
@@ -100,6 +58,7 @@ let botonPromedioEdades
 let botonCostoCuota
 let botonListaDeudores
 let botonTotalRecaudaciones
+let botonRegistrarSocio
 
 class Socio {
     constructor(nroSocio, nombre, apellido, edad, genero, cuotaPaga) {
@@ -188,16 +147,6 @@ function botonesDesactivados(value) {
     botonTotalRecaudaciones.disabled = value
 }
 
-function mostrarMensajeConfirmacion(mensaje) {
-    Toastify({
-        text: mensaje,
-        duration: 3000,
-        close: true,
-        gavity: "top",
-        position: "right",
-    }).showToast();
-}
-
 //USUARIO
 function identificarUsuario(event) {
     event.preventDefault();
@@ -244,7 +193,7 @@ function buscarDatosSocio() {
         `
     contenedorMostrarGestionSocios.append(cartel)
     botonCerrarCartel(cartel, "boton-cancelar")
-    
+
     let botonBuscarSocio = document.getElementById("buscar-dato-socio")
     botonBuscarSocio.onclick = () => {
         let nro = parseInt(inputBuscarSocio.value)
@@ -291,11 +240,7 @@ function validarFormulario(event) {
             genero,
             cuotaPaga
         );
-
-        socios.push(socio);
-        formulario.reset();
-        mostrarMensajeConfirmacion("Socio registrado exitosamente")
-        actualizarSociosStorage()
+        registrarSocioServer(socio)
     } else {
         formulario.reset()
         mensajeError('El id ya existe')
@@ -317,7 +262,6 @@ function eliminarSocio(nroSocio) {
     let indiceBorrar = socios.findIndex((socio) => Number(socio?.nroSocio) === Number(nroSocio));
     if (indiceBorrar !== -1) {
         socios.splice(indiceBorrar, 1)
-        actualizarSociosStorage()
     }
 }
 
@@ -389,6 +333,7 @@ function validarFormularioCambio(event) {
 
     const idExiste = socios.some((socio) => socio?.nroSocio === numero);
     if (idExiste) {
+        let indiceCambiar = socios.findIndex((socio) => Number(socio?.nroSocio) === Number(numero));
         eliminarSocio(numero)
         let socio = new Socio(
             nroSocioCambio,
@@ -398,12 +343,7 @@ function validarFormularioCambio(event) {
             generoCambio,
             cuotaPagaCambio
         );
-        socios.push(socio);
-        formularioCambio.reset()
-        actualizarSociosStorage()
-        botonCambiarDatosSocio.disabled = false
-        contenedorFormIngresoCambio.hidden = true
-        mostrarSocioSA(socio, 'Nuevos datos')
+        cambiarDatosSociosServer(socio, indiceCambiar)
     }
 }
 
@@ -448,12 +388,14 @@ function cambiarDatosSocio() {
         let botonCamb = document.getElementById("buscar-socio")
         botonCamb.onclick = () => {
             numero = parseInt(inputBuscarSocioCambio.value)
-            if(buscarSocio(numero) !== -1){
-                socioACambiar = {...buscarSocio(numero)}
+            if (buscarSocio(numero) !== -1) {
+                socioACambiar = {
+                    ...buscarSocio(numero)
+                }
                 crearTextoForm(socioACambiar)
                 contenedorBuscarSocioCambio.hidden = true
                 contenedorFormIngresoCambio.hidden = false
-            }  else {
+            } else {
                 contenedorBuscarSocioCambio.hidden = true
                 contenedorFormIngresoCambio.hidden = true
                 mensajeError('No existe el socio')
@@ -612,30 +554,75 @@ function totalRecaudaciones() {
 function eliminarStorage() {
     localStorage.clear()
     usuario = ""
-    socios = []
     mostrarFormularioIdentificacion()
     contenedorSocios.innerHTML = ""
-    location. reload()
+    location.reload()
 }
 
-function actualizarSociosStorage() {
-    let sociosJSON = JSON.stringify(socios);
-    localStorage.setItem("socios", sociosJSON);
+async function consultarSociosServer() {
+    try {
+        const response = await fetch("https://63472ff9db76843976a7ebb3.mockapi.io/socios");
+        const data = await response.json();
+        socios = [...data];
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+async function registrarSocioServer(socio) {
+    try {
+        const response = await fetch("https://63472ff9db76843976a7ebb3.mockapi.io/socios",
+            {
+                method: "POST",
+                body: JSON.stringify(socio),
+            }
+        );
+
+        socios.push(socio);
+        formulario.reset();
+        mostrarMensajeConfirmacion("El socio fue registrado exitosamente")
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+async function eliminarSociosServer(socioId) {
+    try {
+        let indiceBorrar = socios.findIndex((socio) => Number(socio?.nroSocio) === Number(socioId));
+        if (indiceBorrar !== -1) {
+            const response = await fetch(`https://63472ff9db76843976a7ebb3.mockapi.io/socios/${indiceBorrar}`, 
+                {
+                    method: "DELETE"
+                }
+            );
+            socios.splice(indiceBorrar, 1)
+            mostrarMensajeConfirmacion("El producto fue eliminado exitosamente");
+        } 
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+async function cambiarDatosSociosServer(socio, indice) {
+    try {
+        const response = await fetch("https://63472ff9db76843976a7ebb3.mockapi.io/socios",
+            {
+                method: "POST",
+                body: JSON.stringify(socio),
+            }
+        );
+        socios.push(socio);
+        formularioCambio.reset()
+        botonCambiarDatosSocio.disabled = false
+        contenedorFormIngresoCambio.hidden = true
+        mostrarSocioSA(socio, 'Nuevos datos')
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 function actualizarUsuarioStorage() {
     localStorage.setItem("usuario", usuario);
-}
-
-function actualizarValorCuotaStorage() {
-    localStorage.setItem("valorCuota", valorCuota);
-}
-
-function obtenerSociosStorage() {
-    let sociosJSON = localStorage.getItem("socios");
-    if (sociosJSON) {
-        socios = JSON.parse(sociosJSON);
-    }
 }
 
 function obtenerUsuarioStorage() {
@@ -644,6 +631,10 @@ function obtenerUsuarioStorage() {
         usuario = usuarioAlmacenado;
         mostrarTextoUsuario();
     }
+}
+
+function actualizarValorCuotaStorage() {
+    localStorage.setItem("valorCuota", valorCuota);
 }
 
 function obtenerValorCuotaStorage() {
@@ -656,10 +647,9 @@ function obtenerValorCuotaStorage() {
 function main() {
     inicializarElementos()
     inicializarEventos()
-    obtenerSociosStorage()
+    consultarSociosServer()
     cargarListaDeudores()
     obtenerUsuarioStorage()
-    actualizarSociosStorage()
     obtenerValorCuotaStorage()
 }
 

@@ -18,7 +18,7 @@ function confirmarEliminacion(elementoEncontrado){
         cancelButtonText: 'Cancelar',
     }).then((result) => {
         if(result.isConfirmed) {
-            eliminarSocio(elementoEncontrado.nroSocio)
+            eliminarSociosServer(elementoEncontrado.nroSocio)
         }
     }
 
@@ -51,4 +51,13 @@ function confirmarCambioCostoCuota() {
         icon: "success",
         html: `<p>El nuevo valor de la cuota es $${valorCuota}</p>`,
     })
+}
+function mostrarMensajeConfirmacion(mensaje) {
+    Toastify({
+        text: mensaje,
+        duration: 3000,
+        close: true,
+        gavity: "top",
+        position: "right",
+    }).showToast();
 }
