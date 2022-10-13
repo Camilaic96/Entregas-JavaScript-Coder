@@ -135,39 +135,6 @@ function inicializarEventos() {
     botonLimpiarStorage.onclick = eliminarStorage
 }
 
-function botonesDesactivados(value) {
-    botonBuscarDatosSocio.disabled = value
-    botonAgregarSocio.disabled = value
-    botonEliminarSocio.disabled = value
-    botonCambiarDatosSocio.disabled = value
-    botonSociosPorGenero.disabled = value
-    botonPromedioEdades.disabled = value
-    botonCostoCuota.disabled = value
-    botonListaDeudores.disabled = value
-    botonTotalRecaudaciones.disabled = value
-}
-
-//USUARIO
-function identificarUsuario(event) {
-    event.preventDefault();
-    usuario = inputUsuario.value;
-    formularioIdentificacion.reset();
-    actualizarUsuarioStorage();
-    mostrarTextoUsuario();
-}
-
-function mostrarTextoUsuario() {
-    contenedorIdentificacion.hidden = true;
-    contenedorUsuario.hidden = false;
-    textoUsuario.innerHTML += ` ${usuario}`;
-}
-
-function mostrarFormularioIdentificacion() {
-    contenedorIdentificacion.hidden = false;
-    contenedorUsuario.hidden = true;
-    textoUsuario.innerHTML = ``;
-}
-
 //section GESTION SOCIOS
 function buscarSocio(nro) {
     let elementoEncontrado = socios.find((socio) => socio?.nroSocio === nro)
@@ -410,14 +377,6 @@ function cambiarDatosSocio() {
 }
 
 //section ESTADISTICAS
-contar = (letra) => {
-    dato = 0
-    for (const socio of socios) {
-        socio?.genero === letra && dato++
-    }
-    return dato
-}
-
 function sociosPorGenero() {
     botonesDesactivados(true)
     mostrarGrafica(false, contar("F"), contar("M"), contar("NB"))
@@ -529,13 +488,6 @@ function listaDeudores() {
     cargarListaDeudores()
     mostrarListaDeudores()
 }
-calcularRecaudacion = () => {
-    let totalRecaud = 0
-    for (const socio of socios) {
-        socio.cuotaPaga === true && (totalRecaud += valorCuota)
-    }
-    return totalRecaud
-}
 
 function totalRecaudaciones() {
     botonesDesactivados(true)
@@ -550,14 +502,6 @@ function totalRecaudaciones() {
     botonCerrarCartel(cartel, "boton-cerrar")
 }
 
-//STORAGE
-function eliminarStorage() {
-    localStorage.clear()
-    usuario = ""
-    mostrarFormularioIdentificacion()
-    contenedorSocios.innerHTML = ""
-    location.reload()
-}
 
 async function consultarSociosServer() {
     try {
@@ -569,6 +513,7 @@ async function consultarSociosServer() {
     }
 }
 
+//SERVER
 async function registrarSocioServer(socio) {
     try {
         const response = await fetch("https://63472ff9db76843976a7ebb3.mockapi.io/socios",
@@ -621,16 +566,13 @@ async function cambiarDatosSociosServer(socio, indice) {
     }
 }
 
-function actualizarUsuarioStorage() {
-    localStorage.setItem("usuario", usuario);
-}
-
-function obtenerUsuarioStorage() {
-    let usuarioAlmacenado = localStorage.getItem("usuario");
-    if (usuarioAlmacenado) {
-        usuario = usuarioAlmacenado;
-        mostrarTextoUsuario();
-    }
+//STORAGE
+function eliminarStorage() {
+    localStorage.clear()
+    usuario = ""
+    mostrarFormularioIdentificacion()
+    contenedorSocios.innerHTML = ""
+    location.reload()
 }
 
 function actualizarValorCuotaStorage() {
