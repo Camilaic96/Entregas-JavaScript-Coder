@@ -541,7 +541,7 @@ async function eliminarSociosServer(socioId) {
                 }
             );
             socios.splice(indiceBorrar, 1)
-            mostrarMensajeConfirmacion("El producto fue eliminado exitosamente");
+            mostrarMensajeConfirmacion("El socio fue eliminado exitosamente");
         } 
     } catch (error) {
         console.log(error);
