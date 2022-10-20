@@ -4,7 +4,7 @@ function mostrarGrafica(value, cantMuj, cantHom, cantNB) {
     graficaSociosPorGenero.hidden = value
     let xValues = ["Mujeres", "Hombres", "No binarixs"];
     let yValues = [cantMuj, cantHom, cantNB];
-    let barColors = ["red", "green", "yellow"];
+    let barColors = ["#0a470a", "green", "#3cba92"];
     new Chart("graf-socios-por-genero", {
         type: "pie",
         data: {
